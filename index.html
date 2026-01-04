@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Francis | Cybersecurity & Technical Writer</title>
+  <meta name="description" content="Cybersecurity enthusiast, IT professional, and technical writer. Portfolio hosted on GitHub." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #111827;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #22c55e;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(180deg, #020617, #0f172a);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 5rem 2rem 3rem;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    h1 span {
+      color: var(--accent);
+    }
+
+    .subtitle {
+      font-size: 1.25rem;
+      color: var(--muted);
+      max-width: 700px;
+    }
+
+    section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.9);
+      border-radius: 1rem;
+      padding: 1.75rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    h3 {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      margin-top: 0;
+      color: var(--muted);
+    }
+
+    ul {
+      padding-left: 1.2rem;
+      color: var(--muted);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .cta {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #052e16;
+      font-weight: 700;
+    }
+
+    .cta:hover {
+      opacity: 0.9;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Hi, I'm <span>Francis</span></h1>
+    <p class="subtitle">
+      Cybersecurity-focused IT professional, CTF enthusiast, and aspiring technical writer.
+      I build, break, analyze, and document systems — with a strong bias toward clarity and security.
+    </p>
+    <a class="cta" href="https://github.com/" target="_blank">View GitHub</a>
+  </header>
+
+  <section>
+    <h2>What I Do</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Cybersecurity & IT</h3>
+        <ul>
+          <li>Kali Linux & Virtual Labs</li>
+          <li>Network Traffic Analysis (Wireshark, tcpdump)</li>
+          <li>Vulnerability Scanning & Enumeration</li>
+          <li>CTF-style problem solving</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Technical Writing</h3>
+        <ul>
+          <li>Clear security documentation</li>
+          <li>How‑to guides & README files</li>
+          <li>Beginner‑friendly explanations</li>
+          <li>Project‑based learning content</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Automation & Projects</h3>
+        <ul>
+          <li>Linux & Bash scripting</li>
+          <li>Workflow automation concepts</li>
+          <li>API‑driven tools & experiments</li>
+          <li>GitHub‑first project delivery</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Featured Focus Areas</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Security Learning Labs</h3>
+        <p>
+          Hands‑on experimentation with networking, exploitation basics, and defensive analysis —
+          all documented for repeatability and learning.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Documentation‑Driven Development</h3>
+        <p>
+          Projects are structured to be understood by strangers: clean READMEs, diagrams,
+          assumptions stated, and reproducible steps.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Beginner to Intermediate Pathways</h3>
+        <p>
+          Content aimed at people starting in IT and cybersecurity, especially those using Linux
+          and open‑source tools.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Get in Touch</h2>
+    <p>
+      Interested in collaboration, documentation work, or security‑focused projects?
+      The best place to start is my GitHub profile.
+    </p>
+    <a class="cta" href="https://github.com/" target="_blank">github.com/your-username</a>
+  </section>
+
+  <footer>
+    © 2026 Francis · Built for GitHub Pages
+  </footer>
+
+</body>
+</html>
