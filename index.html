@@ -1,303 +1,271 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Francis Kuria | Cybersecurity & Technical Writer</title>
-  <meta name="description" content="Cybersecurity-focused IT professional, CTF enthusiast, and technical writer. Portfolio hosted on GitHub." />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Francis Kuria — Cybersecurity & Technical Writer</title>
+  <meta name="description" content="Francis Kuria — Cybersecurity-focused IT professional, CTF enthusiast, and technical writer. Projects, case studies, and contact." />
 
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Francis Kuria — Cybersecurity & Technical Writer" />
+  <meta property="og:description" content="Cybersecurity-focused IT professional, CTF enthusiast, and technical writer. View projects and contact." />
+  <meta property="og:url" content="https://theepreacher-ai.github.io/francis-kuria.github.io/" />
+  <meta property="og:image" content="https://theepreacher-ai.github.io/francis-kuria.github.io/assets/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Fonts & favicon -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="/favicon.ico" />
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Francis Kuria",
+    "url": "https://theepreacher-ai.github.io/francis-kuria.github.io/",
+    "jobTitle": "Cybersecurity & Technical Writer",
+    "sameAs": [
+      "https://github.com/theepreacher-ai",
+      "https://twitter.com/insightsphere7"
+    ]
+  }
+  </script>
 
   <style>
-    :root {
-      --bg: #020617;
-      --card: #111827;
+    :root{
+      --bg-start: #020617;
+      --bg-end: #0f172a;
+      --card: rgba(17,24,39,0.95);
       --text: #e5e7eb;
       --muted: #9ca3af;
       --accent: #22c55e;
       --focus: #0a66c2;
+      --radius: 12px;
+      --container: 1100px;
     }
 
-    * { box-sizing: border-box; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-       font-family: "Times New Roman", Times, serif;
-}
-
-button, nav, .cta {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
-      background: linear-gradient(180deg, var(--bg), #0f172a);
-      color: var(--text);
-      line-height: 1.5;
-      font-size: 16px;
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg,var(--bg-start),var(--bg-end));
+      color:var(--text);
+      line-height:1.5;
+      font-size:16px;
+      -webkit-font-smoothing:antialiased;
     }
 
-    /* Skip link */
-    .skip-link {
-      position: absolute;
-      top: -40px;
-      left: 16px;
-      background: #fff;
-      color: #000;
-      padding: 8px 12px;
-      z-index: 100;
+    /* Skip link accessible to keyboard users */
+    .skip-link{
+      position:absolute;
+      left:16px;
+      top:-48px;
+      background:#fff;
+      color:#000;
+      padding:8px 12px;
+      z-index:100;
+      border-radius:6px;
+      transition:top .12s ease;
     }
-    .skip-link:focus { top: 16px; }
+    .skip-link:focus{ top:16px; }
 
-    /* Global touch targets */
-    .touch-target, a, button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 48px;
-      min-height: 48px;
-      padding: 12px 16px;
-      touch-action: manipulation;
-      -webkit-tap-highlight-color: rgba(0,0,0,0.08);
-      color: inherit;
-      background: none;
-      border: none;
-      font: inherit;
-      cursor: pointer;
+    a { color:inherit; text-decoration:none; }
+    .container{ max-width:var(--container); margin:0 auto; padding:1.5rem 1.25rem; }
+
+    header{ padding-top:1rem; padding-bottom:1.5rem; }
+    .top-bar{ display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+    .brand{ font-weight:700; letter-spacing:0.2px; }
+    nav ul{ list-style:none; margin:0; padding:0; display:flex; gap:1rem; align-items:center; }
+    nav a{ color:var(--muted); font-weight:600; padding:8px 10px; border-radius:8px; }
+    nav a:hover, nav a:focus{ color:var(--text); background:rgba(255,255,255,0.02); outline:none; }
+
+    /* Hero */
+    .hero{ display:flex; gap:2rem; align-items:center; margin-top:1.5rem; flex-wrap:wrap; }
+    .hero-copy{ flex:1 1 380px; min-width:240px; }
+    h1{ font-size:clamp(2rem,5vw,3rem); margin:0 0 .5rem; line-height:1.05; }
+    h1 span{ color:var(--accent); }
+    .subtitle{ color:var(--muted); font-size:1.05rem; max-width:70ch; margin:0 0 1rem; }
+
+    .hero-cta{ display:flex; gap:.75rem; flex-wrap:wrap; align-items:center; }
+    .btn{
+      display:inline-flex; align-items:center; gap:.5rem; padding:10px 14px; border-radius:999px;
+      font-weight:700; cursor:pointer; border:none; text-decoration:none;
     }
+    .btn-primary{ background:var(--accent); color:#052e16; box-shadow:0 8px 20px rgba(0,0,0,0.35); }
+    .btn-ghost{ background:transparent; color:var(--text); border:1px solid rgba(255,255,255,0.06); }
 
-    :focus-visible {
-      outline: 3px solid var(--focus);
-      outline-offset: 3px;
-    }
-
-    @media @media (hover: hover) and (pointer: fine) 
- {
-      a, button { padding: 14px 18px; }
-    }
-
-    header {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 1.5rem 2rem 3rem;
-    }
-
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .avatar{
+      width:160px; height:160px; border-radius:16px; object-fit:cover; flex:0 0 160px;
+      box-shadow:0 12px 30px rgba(0,0,0,0.5); border:2px solid rgba(255,255,255,0.03);
     }
 
-    nav ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      gap: 1rem;
+    /* Sections & grid */
+    main section{ padding:2.25rem 0; }
+    h2{ font-size:clamp(1.25rem,3vw,1.6rem); margin:0 0 1rem; }
+    .grid{ display:grid; gap:1.25rem; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); }
+
+    .card{
+      background:var(--card); border-radius:var(--radius); padding:1.25rem; box-shadow:0 10px 25px rgba(0,0,0,0.35);
+      transition:transform .14s ease,box-shadow .14s ease;
     }
+    .card:hover{ transform:translateY(-6px); box-shadow:0 18px 40px rgba(2,6,23,0.6); }
 
-    nav a {
-      color: var(--text);
-      font-weight: 600;
-    }
+    /* Project card */
+    .project-thumb{ width:100%; height:160px; object-fit:cover; border-radius:10px; display:block; }
+    .project-meta{ display:flex; gap:.5rem; align-items:center; margin-top:.75rem; flex-wrap:wrap; }
+    .badge{ background:#0b1220; color:var(--muted); padding:.2rem .5rem; border-radius:8px; font-size:.8rem; }
 
-    #site-nav[hidden] { display: none; }
+    .cta{ margin-top:1rem; display:inline-block; }
 
-    h1 {
-      font-size: clamp(2rem, 5vw, 3rem);
-      margin: 3rem 0 1rem;
-      line-height: 1.2;
-    }
+    footer{ text-align:center; padding:2rem 0; color:var(--muted); font-size:.9rem; }
 
-    h1 span { color: var(--accent); }
+    /* Focus outline for keyboard users */
+    :focus-visible { outline:3px solid var(--focus); outline-offset:3px; border-radius:6px; }
 
-    .subtitle {
-      font-size: 1.1rem;
-      color: var(--muted);
-      max-width: 720px;
-    }
-
-    main section {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 3rem 2rem;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .card {
-      background: rgba(17, 24, 39, 0.95);
-      border-radius: 1rem;
-      padding: 1.75rem;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.35);
-      transition: transform .15s ease, box-shadow .15s ease;
-    }
-
-    .card:active {
-      transform: scale(.98);
-      box-shadow: none;
-    }
-
-    h2 {
-      font-size: clamp(1.5rem, 4vw, 2rem);
-      margin-bottom: 1.5rem;
-    }
-
-    h3 { margin-top: 0; }
-
-    p, ul { color: var(--muted); }
-
-    ul { padding-left: 1.2rem; }
-
-    .cta {
-      margin-top: 1.75rem;
-      background: var(--accent);
-      color: #052e16;
-      font-weight: 700;
-      border-radius: 999px;
-      box-shadow: 0 8px 20px rgba(0,0,0,.35);
-      transition: transform .12s ease, box-shadow .12s ease;
-    }
-
-    .cta:active {
-      transform: scale(.98);
-      box-shadow: none;
-    }
-
-    footer {
-      text-align: center;
-      padding: 2rem;
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    @media (max-width: 768px) {
-      nav ul { flex-direction: column; }
-    }
+    /* Responsive tweaks */
+    @media (max-width:720px){ .avatar{ width:120px; height:120px; } .hero{ gap:1rem; } nav ul{ gap:.5rem; } }
+    @media (hover: hover) and (pointer: fine){ .btn:hover{ transform:translateY(-2px); } }
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
 
-<header>
-  <div class="top-bar">
-    <strong>Francis</strong>
-    <button id="navToggle" aria-controls="site-nav" aria-expanded="false" aria-label="Open menu" class="touch-target">☰</button>
-  </div>
-  <nav id="site-nav" hidden>
-    <ul>
-      <li><a href="#work">Work</a></li>
-      <li><a href="#focus">Focus</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
-
-  <h1>Hi, I'm <span>Francis Kuria</span></h1>
-  <p class="subtitle">
-    Cybersecurity-focused IT professional, CTF enthusiast, and technical writer.
-    I build, analyze, and document secure systems with clarity and intent.
-  </p>
-  <a class="cta touch-target" href="https://github.com/your-username" target="_blank">View GitHub</a>
-</header>
-
-<main id="main">
-  <section id="work">
-    <h2>What I Do</h2>
-    <div class="grid">
-      <div class="card touch-target">
-        <h3>Cybersecurity & IT</h3>
-        <ul>
-          <li>Kali Linux & virtual labs</li>
-          <li>Network traffic analysis</li>
-          <li>Vulnerability scanning</li>
-          <li>CTF-style problem solving</li>
-        </ul>
-      </div>
-      <div class="card touch-target">
-        <h3>Technical Writing</h3>
-        <ul>
-          <li>Security documentation</li>
-          <li>Guides & READMEs</li>
-          <li>Beginner-friendly explanations</li>
-        </ul>
-      </div>
-      <div class="card touch-target">
-        <h3>Automation & Projects</h3>
-        <ul>
-          <li>Linux & Bash scripting</li>
-          <li>Workflow automation</li>
-          <li>GitHub-first delivery</li>
-        </ul>
+  <header class="container" role="banner">
+    <div class="top-bar" aria-hidden="false">
+      <div class="brand">Francis Kuria</div>
+      <div style="display:flex;align-items:center;gap:.5rem;">
+        <button id="navToggle" aria-controls="site-nav" aria-expanded="false" aria-label="Open menu" class="btn btn-ghost">☰</button>
       </div>
     </div>
-  </section>
 
-  <section id="focus">
-    <h2>Focus Areas</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>Hands-on Security Labs</h3>
-        <p>Documented experiments in networking, exploitation basics, and defensive analysis.</p>
+    <nav id="site-nav" hidden aria-label="Primary">
+      <ul>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#focus">Focus</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="https://github.com/theepreacher-ai" target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+    </nav>
+
+    <div class="hero">
+      <div class="hero-copy">
+        <h1>Hi — I’m <span>Francis Kuria</span></h1>
+        <p class="subtitle">
+          Cybersecurity-focused IT professional, CTF enthusiast, and technical writer. I build, analyze, and document secure systems with clarity and intent.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#work">View Work</a>
+          <a class="btn btn-ghost" href="/resume.pdf" target="_blank" rel="noopener">Download Resume</a>
+          <a class="btn btn-ghost" href="mailto:kuriaf791@gmail.com">Email</a>
+        </div>
       </div>
-      <div class="card">
-        <h3>Documentation-Driven Work</h3>
-        <p>Every project is built to be understood by others: assumptions stated and steps reproducible.</p>
-      </div>
-      <div class="card">
-        <h3>Learning Pathways</h3>
-        <p>Content aimed at beginners moving into intermediate cybersecurity and IT practice.</p>
-      </div>
+
+      <!-- Replace src with your headshot; use a suitably cropped/optimized image -->
+      <img class="avatar" src="/assets/francis-avatar.jpg" alt="Francis Kuria — headshot" width="160" height="160" loading="lazy">
     </div>
-  </section>
+  </header>
 
-  <section id="contact">
-    <h2>Get in Touch</h2>
-<p>If you'd like to collaborate or review my work, you can reach me directly on any of the platforms below.</p>
+  <main id="main" tabindex="-1">
+    <section id="work" class="container" aria-labelledby="work-heading">
+      <h2 id="work-heading">Featured Projects</h2>
 
+      <div class="grid" aria-live="polite">
+        <!-- Example project card — replace links & images with real assets -->
+        <article class="card" aria-labelledby="p1">
+          <img class="project-thumb" src="/assets/projects/project1-thumb.jpg" alt="Screenshot of Project One" loading="lazy" width="1200" height="675">
+          <h3 id="p1" style="margin:.75rem 0 0;">Project One — Secure Audit Toolkit</h3>
+          <p style="color:var(--muted); margin:.4rem 0 .6rem;">Automation for vulnerability discovery and reporting. Reduced manual triage time by automating common scans.</p>
+          <div class="project-meta">
+            <span class="badge">Bash</span><span class="badge">Python</span>
+            <a class="btn btn-ghost" href="https://github.com/theepreacher-ai/project-one" target="_blank" rel="noopener">Code</a>
+            <a class="btn btn-primary" href="#" target="_blank" rel="noopener">Live</a>
+          </div>
+        </article>
 
-<div style="display:flex; flex-wrap:wrap; gap:1rem; margin-top:1.5rem;">
-<a class="cta touch-target"
-href="mailto:kuriaf791@gmail.com">
-Email Me
-</a>
+        <article class="card" aria-labelledby="p2">
+          <img class="project-thumb" src="/assets/projects/project2-thumb.jpg" alt="Screenshot of Project Two" loading="lazy" width="1200" height="675">
+          <h3 id="p2" style="margin:.75rem 0 0;">Project Two — CTF Writeups & Tools</h3>
+          <p style="color:var(--muted); margin:.4rem 0 .6rem;">Collection of writeups, tools and reproducible labs to help newcomers learn practical skills.</p>
+          <div class="project-meta">
+            <span class="badge">Docs</span><span class="badge">Shell</span>
+            <a class="btn btn-ghost" href="https://github.com/theepreacher-ai/ctf-writeups" target="_blank" rel="noopener">Code</a>
+          </div>
+        </article>
 
+        <!-- Add more project cards as needed -->
+      </div>
+    </section>
 
-<a class="cta touch-target"
-href="https://wa.me/254797145871"
-target="_blank"
-aria-label="Chat with me on WhatsApp">
-WhatsApp
-</a>
+    <section id="focus" class="container" aria-labelledby="focus-heading">
+      <h2 id="focus-heading">Focus Areas</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Hands-on Security Labs</h3>
+          <p style="color:var(--muted)">Documented experiments in networking, exploitation basics, and defensive analysis — reproducible steps and learnings.</p>
+        </div>
+        <div class="card">
+          <h3>Documentation-Driven Work</h3>
+          <p style="color:var(--muted)">Every project is built to be understood by others: assumptions stated and steps reproducible.</p>
+        </div>
+        <div class="card">
+          <h3>Learning Pathways</h3>
+          <p style="color:var(--muted)">Content and guides aimed at beginners moving into intermediate cybersecurity practice.</p>
+        </div>
+      </div>
+    </section>
 
+    <section id="contact" class="container" aria-labelledby="contact-heading">
+      <h2 id="contact-heading">Get in Touch</h2>
+      <p style="color:var(--muted)">If you'd like to collaborate or review my work, reach out via email, WhatsApp, or Twitter below.</p>
 
-<a class="cta touch-target"
-href="https://twitter.com/insightsphere7"
-target="_blank"
-aria-label="View my Twitter profile">
-Twitter / X
-</a>
-</div>
-  </section>
-</main>
+      <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-top:1rem;">
+        <a class="btn btn-primary" href="mailto:kuriaf791@gmail.com">Email Me</a>
+        <a class="btn btn-ghost" href="https://wa.me/254797145871" target="_blank" rel="noopener">WhatsApp</a>
+        <a class="btn btn-ghost" href="https://twitter.com/insightsphere7" target="_blank" rel="noopener">Twitter</a>
+      </div>
+    </section>
+  </main>
 
-<footer>
-  © 2026 Francis Kuria · Built for GitHub Pages
-</footer>
+  <footer>
+    <div class="container">
+      © 2026 Francis Kuria · Built with GitHub Pages · <a href="/privacy.html" style="color:var(--muted)">Privacy</a>
+    </div>
+  </footer>
 
-<script>
-  (function(){
-    const btn = document.getElementById('navToggle');
-    const nav = document.getElementById('site-nav');
-    btn.addEventListener('click', () => {
-      const open = btn.getAttribute('aria-expanded') === 'true';
-      btn.setAttribute('aria-expanded', String(!open));
-      nav.hidden = open;
-    });
-  })();
-</script>
+  <script>
+    (function(){
+      const btn = document.getElementById('navToggle');
+      const nav = document.getElementById('site-nav');
 
+      function toggleNav(){
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!expanded));
+        nav.hidden = expanded;
+      }
+
+      btn.addEventListener('click', toggleNav);
+
+      // Close nav when clicking outside (mobile)
+      document.addEventListener('click', (e) => {
+        if (!nav.contains(e.target) && !btn.contains(e.target) && !nav.hidden) {
+          btn.setAttribute('aria-expanded', 'false');
+          nav.hidden = true;
+        }
+      });
+
+      // Close nav on Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !nav.hidden) {
+          btn.setAttribute('aria-expanded', 'false');
+          nav.hidden = true;
+          btn.focus();
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
