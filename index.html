@@ -19,21 +19,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
   <link rel="icon" href="/favicon.ico" />
 
-  <!-- JSON-LD -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Francis Kuria",
-    "url": "https://theepreacher-ai.github.io/francis-kuria.github.io/",
-    "jobTitle": "Cybersecurity & Technical Writer",
-    "sameAs": [
-      "https://github.com/theepreacher-ai",
-      "https://twitter.com/insightsphere7"
-    ]
-  }
-  </script>
-
   <style>
     :root{
       --bg-start: #020617;
@@ -59,20 +44,8 @@
       -webkit-font-smoothing:antialiased;
     }
 
-    /* Skip link accessible to keyboard users */
-    .skip-link{
-      position:absolute;
-      left:16px;
-      top:-48px;
-      background:#fff;
-      color:#000;
-      padding:8px 12px;
-      z-index:100;
-      border-radius:6px;
-      transition:top .12s ease;
-    }
+    .skip-link{ position:absolute; left:16px; top:-48px; background:#fff; color:#000; padding:8px 12px; z-index:100; border-radius:6px; transition:top .12s ease; }
     .skip-link:focus{ top:16px; }
-
     a { color:inherit; text-decoration:none; }
     .container{ max-width:var(--container); margin:0 auto; padding:1.5rem 1.25rem; }
 
@@ -83,7 +56,6 @@
     nav a{ color:var(--muted); font-weight:600; padding:8px 10px; border-radius:8px; }
     nav a:hover, nav a:focus{ color:var(--text); background:rgba(255,255,255,0.02); outline:none; }
 
-    /* Hero */
     .hero{ display:flex; gap:2rem; align-items:center; margin-top:1.5rem; flex-wrap:wrap; }
     .hero-copy{ flex:1 1 380px; min-width:240px; }
     h1{ font-size:clamp(2rem,5vw,3rem); margin:0 0 .5rem; line-height:1.05; }
@@ -91,42 +63,29 @@
     .subtitle{ color:var(--muted); font-size:1.05rem; max-width:70ch; margin:0 0 1rem; }
 
     .hero-cta{ display:flex; gap:.75rem; flex-wrap:wrap; align-items:center; }
-    .btn{
-      display:inline-flex; align-items:center; gap:.5rem; padding:10px 14px; border-radius:999px;
-      font-weight:700; cursor:pointer; border:none; text-decoration:none;
-    }
+    .btn{ display:inline-flex; align-items:center; gap:.5rem; padding:10px 14px; border-radius:999px; font-weight:700; cursor:pointer; border:none; text-decoration:none; }
     .btn-primary{ background:var(--accent); color:#052e16; box-shadow:0 8px 20px rgba(0,0,0,0.35); }
     .btn-ghost{ background:transparent; color:var(--text); border:1px solid rgba(255,255,255,0.06); }
 
-    .avatar{
-      width:160px; height:160px; border-radius:16px; object-fit:cover; flex:0 0 160px;
-      box-shadow:0 12px 30px rgba(0,0,0,0.5); border:2px solid rgba(255,255,255,0.03);
-    }
+    /* Avatar (uses picture element below) */
+    .avatar{ width:160px; height:160px; border-radius:16px; object-fit:cover; flex:0 0 160px; box-shadow:0 12px 30px rgba(0,0,0,0.5); border:2px solid rgba(255,255,255,0.03); }
 
-    /* Sections & grid */
     main section{ padding:2.25rem 0; }
     h2{ font-size:clamp(1.25rem,3vw,1.6rem); margin:0 0 1rem; }
     .grid{ display:grid; gap:1.25rem; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); }
 
-    .card{
-      background:var(--card); border-radius:var(--radius); padding:1.25rem; box-shadow:0 10px 25px rgba(0,0,0,0.35);
-      transition:transform .14s ease,box-shadow .14s ease;
-    }
+    .card{ background:var(--card); border-radius:var(--radius); padding:1.25rem; box-shadow:0 10px 25px rgba(0,0,0,0.35); transition:transform .14s ease,box-shadow .14s ease; }
     .card:hover{ transform:translateY(-6px); box-shadow:0 18px 40px rgba(2,6,23,0.6); }
 
-    /* Project card */
     .project-thumb{ width:100%; height:160px; object-fit:cover; border-radius:10px; display:block; }
     .project-meta{ display:flex; gap:.5rem; align-items:center; margin-top:.75rem; flex-wrap:wrap; }
     .badge{ background:#0b1220; color:var(--muted); padding:.2rem .5rem; border-radius:8px; font-size:.8rem; }
 
     .cta{ margin-top:1rem; display:inline-block; }
-
     footer{ text-align:center; padding:2rem 0; color:var(--muted); font-size:.9rem; }
 
-    /* Focus outline for keyboard users */
     :focus-visible { outline:3px solid var(--focus); outline-offset:3px; border-radius:6px; }
 
-    /* Responsive tweaks */
     @media (max-width:720px){ .avatar{ width:120px; height:120px; } .hero{ gap:1rem; } nav ul{ gap:.5rem; } }
     @media (hover: hover) and (pointer: fine){ .btn:hover{ transform:translateY(-2px); } }
   </style>
@@ -135,7 +94,7 @@
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="container" role="banner">
-    <div class="top-bar" aria-hidden="false">
+    <div class="top-bar">
       <div class="brand">Francis Kuria</div>
       <div style="display:flex;align-items:center;gap:.5rem;">
         <button id="navToggle" aria-controls="site-nav" aria-expanded="false" aria-label="Open menu" class="btn btn-ghost">☰</button>
@@ -159,26 +118,29 @@
         </p>
         <div class="hero-cta">
           <a class="btn btn-primary" href="#work">View Work</a>
-          <a class="btn btn-ghost" href="/resume.pdf" target="_blank" rel="noopener">Download Resume</a>
+          <!-- Link to the uploaded resume PDF -->
+          <a class="btn btn-ghost" href="/assets/Francis_Kuria_CV.pdf" target="_blank" rel="noopener">Download Resume</a>
           <a class="btn btn-ghost" href="mailto:kuriaf791@gmail.com">Email</a>
         </div>
       </div>
 
-      <!-- Replace src with your headshot; use a suitably cropped/optimized image -->
-      <img class="avatar" src="/assets/francis-avatar.jpg" alt="Francis Kuria — headshot" width="160" height="160" loading="lazy">
+      <!-- Picture element: add WebP + fallback JPEG/PNG -->
+      <picture>
+        <!-- optional optimized webp (create assets/francis-avatar.webp) -->
+        <source srcset="/assets/francis-avatar.webp" type="image/webp">
+        <img class="avatar" src="/assets/francis-avatar.jpg" alt="Francis Kuria — headshot" width="160" height="160" loading="lazy">
+      </picture>
     </div>
   </header>
 
   <main id="main" tabindex="-1">
     <section id="work" class="container" aria-labelledby="work-heading">
       <h2 id="work-heading">Featured Projects</h2>
-
       <div class="grid" aria-live="polite">
-        <!-- Example project card — replace links & images with real assets -->
         <article class="card" aria-labelledby="p1">
           <img class="project-thumb" src="/assets/projects/project1-thumb.jpg" alt="Screenshot of Project One" loading="lazy" width="1200" height="675">
-          <h3 id="p1" style="margin:.75rem 0 0;">Project One — Secure Audit Toolkit</h3>
-          <p style="color:var(--muted); margin:.4rem 0 .6rem;">Automation for vulnerability discovery and reporting. Reduced manual triage time by automating common scans.</p>
+          <h3 id="p1">Project One — Secure Audit Toolkit</h3>
+          <p style="color:var(--muted)">Automation for vulnerability discovery and reporting. Reduced manual triage time by automating common scans.</p>
           <div class="project-meta">
             <span class="badge">Bash</span><span class="badge">Python</span>
             <a class="btn btn-ghost" href="https://github.com/theepreacher-ai/project-one" target="_blank" rel="noopener">Code</a>
@@ -188,15 +150,13 @@
 
         <article class="card" aria-labelledby="p2">
           <img class="project-thumb" src="/assets/projects/project2-thumb.jpg" alt="Screenshot of Project Two" loading="lazy" width="1200" height="675">
-          <h3 id="p2" style="margin:.75rem 0 0;">Project Two — CTF Writeups & Tools</h3>
-          <p style="color:var(--muted); margin:.4rem 0 .6rem;">Collection of writeups, tools and reproducible labs to help newcomers learn practical skills.</p>
+          <h3 id="p2">Project Two — CTF Writeups & Tools</h3>
+          <p style="color:var(--muted)">Collection of writeups, tools and reproducible labs to help newcomers learn practical skills.</p>
           <div class="project-meta">
             <span class="badge">Docs</span><span class="badge">Shell</span>
             <a class="btn btn-ghost" href="https://github.com/theepreacher-ai/ctf-writeups" target="_blank" rel="noopener">Code</a>
           </div>
         </article>
-
-        <!-- Add more project cards as needed -->
       </div>
     </section>
 
@@ -249,7 +209,7 @@
 
       btn.addEventListener('click', toggleNav);
 
-      // Close nav when clicking outside (mobile)
+      // Close nav clicking outside
       document.addEventListener('click', (e) => {
         if (!nav.contains(e.target) && !btn.contains(e.target) && !nav.hidden) {
           btn.setAttribute('aria-expanded', 'false');
