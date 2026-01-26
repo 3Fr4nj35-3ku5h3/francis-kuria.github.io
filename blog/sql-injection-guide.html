@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Understanding SQL Injection: A Practical Guide — Francis Kuria</title>
+  <meta name="description" content="Deep dive into SQL injection vulnerabilities, how they work, and practical mitigation strategies." />
+  
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>" />
+
+  <style>
+    :root{
+      --bg-start: #020617;
+      --bg-end: #0f172a;
+      --card: rgba(17,24,39,0.95);
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #22c55e;
+      --accent-hover: #16a34a;
+      --focus: #0a66c2;
+      --radius: 12px;
+      --container: 800px;
+      --border: rgba(255,255,255,0.06);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth}
+    body{
+      font-family: "Times New Roman", Times, serif;
+      background: linear-gradient(180deg,var(--bg-start),var(--bg-end));
+      color:var(--text);
+      line-height:1.8;
+      font-size:18px;
+      -webkit-font-smoothing:antialiased;
+      min-height:100vh;
+    }
+
+    a { color:var(--accent); text-decoration:none; transition:all .2s ease; }
+    a:hover { color:var(--accent-hover); text-decoration:underline; }
+    .container{ max-width:var(--container); margin:0 auto; padding:1.5rem 1.25rem; }
+
+    /* Header */
+    header{ 
+      padding:1.5rem 0; 
+      border-bottom:1px solid var(--border);
+      background:rgba(2,6,23,0.8);
+      backdrop-filter:blur(10px);
+      position:sticky;
+      top:0;
+      z-index:100;
+    }
+    .header-content{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      max-width:var(--container);
+      margin:0 auto;
+      padding:0 1.25rem;
+    }
+    .brand{ 
+      font-weight:700; 
+      font-size:1.1rem;
+      display:flex;
+      align-items:center;
+      gap:0.5rem;
+      color:var(--text);
+    }
+    .brand:hover{ color:var(--accent); text-decoration:none; }
+    .back-link{
+      color:var(--muted);
+      font-size:0.95rem;
+    }
+    .back-link:hover{
+      color:var(--accent);
+    }
+
+    /* Article Header */
+    .article-header{
+      padding:3rem 0 2rem;
+      border-bottom:1px solid var(--border);
+    }
+    .article-meta{
+      display:flex;
+      gap:1rem;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-size:0.95rem;
+      margin-bottom:1.5rem;
+    }
+    .tags{
+      display:flex;
+      gap:0.5rem;
+      flex-wrap:wrap;
+      margin-bottom:1rem;
+    }
+    .tag{
+      background:#0b1220;
+      color:var(--accent);
+      padding:0.35rem 0.75rem;
+      border-radius:6px;
+      font-size:0.85rem;
+      font-weight:600;
+      border:1px solid rgba(34,197,94,0.2);
+    }
+    h1{
+      font-size:clamp(2rem,5vw,2.75rem);
+      margin-bottom:1rem;
+      font-weight:700;
+      line-height:1.2;
+    }
+    .lead{
+      font-size:1.25rem;
+      color:var(--muted);
+      line-height:1.6;
+      margin-bottom:1.5rem;
+    }
+    .author-info{
+      display:flex;
+      align-items:center;
+      gap:1rem;
+      padding:1.5rem 0;
+    }
+    .author-avatar{
+      width:60px;
+      height:60px;
+      border-radius:50%;
+      border:2px solid var(--accent);
+    }
+    .author-details h4{
+      font-size:1rem;
+      margin-bottom:0.25rem;
+    }
+    .author-details p{
+      color:var(--muted);
+      font-size:0.9rem;
+    }
+
+    /* Article Content */
+    article{
+      padding:2.5rem 0;
+    }
+    article h2{
+      font-size:1.75rem;
+      margin:2.5rem 0 1rem;
+      font-weight:700;
+      color:var(--accent);
+    }
+    article h3{
+      font-size:1.35rem;
+      margin:2rem 0 1rem;
+      font-weight:700;
+    }
+    article p{
+      margin-bottom:1.5rem;
+      color:var(--text);
+    }
+    article ul, article ol{
+      margin-bottom:1.5rem;
+      padding-left:2rem;
+    }
+    article li{
+      margin-bottom:0.75rem;
+    }
+    article strong{
+      color:var(--accent);
+      font-weight:700;
+    }
+    article em{
+      color:var(--muted);
+      font-style:italic;
+    }
+
+    /* Code Blocks */
+    pre{
+      background:#0b1220;
+      border:1px solid var(--border);
+      border-radius:8px;
+      padding:1.25rem;
+      overflow-x:auto;
+      margin:1.5rem 0;
+      font-family:'Courier New', monospace;
+      font-size:0.9rem;
+      line-height:1.6;
+    }
+    code{
+      background:#0b1220;
+      padding:0.2rem 0.5rem;
+      border-radius:4px;
+      font-family:'Courier New', monospace;
+      font-size:0.9em;
+      color:#22c55e;
+    }
+    pre code{
+      background:transparent;
+      padding:0;
+      color:#e5e7eb;
+    }
+
+    /* Callout Boxes */
+    .callout{
+      background:var(--card);
+      border-left:4px solid var(--accent);
+      border-radius:8px;
+      padding:1.25rem 1.5rem;
+      margin:1.5rem 0;
+    }
+    .callout-warning{
+      border-left-color:#f59e0b;
+    }
+    .callout-danger{
+      border-left-color:#ef4444;
+    }
+    .callout h4{
+      font-size:1.1rem;
+      margin-bottom:0.5rem;
+      display:flex;
+      align-items:center;
+      gap:0.5rem;
+    }
+    .callout p{
+      margin-bottom:0;
+      color:var(--muted);
+    }
+
+    /* Table of Contents */
+    .toc{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:1.5rem;
+      margin:2rem 0;
+    }
+    .toc h3{
+      font-size:1.1rem;
+      margin:0 0 1rem;
+      color:var(--accent);
+    }
+    .toc ul{
+      list-style:none;
+      padding:0;
+      margin:0;
+    }
+    .toc li{
+      margin-bottom:0.5rem;
+    }
+    .toc a{
+      color:var(--muted);
+      text-decoration:none;
+    }
+    .toc a:hover{
+      color:var(--accent);
+    }
+
+    /* Share & Navigation */
+    .article-footer{
+      border-top:1px solid var(--border);
+      padding:2rem 0;
+      margin-top:3rem;
+    }
+    .share-buttons{
+      display:flex;
+      gap:0.75rem;
+      margin-bottom:2rem;
+    }
+    .share-btn{
+      padding:10px 16px;
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:8px;
+      color:var(--text);
+      cursor:pointer;
+      transition:all .2s ease;
+      text-decoration:none;
+      font-size:0.9rem;
+      font-weight:600;
+    }
+    .share-btn:hover{
+      background:var(--accent);
+      color:#052e16;
+      border-color:var(--accent);
+      text-decoration:none;
+    }
+
+    .nav-posts{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:1rem;
+      margin-top:2rem;
+    }
+    .nav-post{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:1.25rem;
+      transition:all .2s ease;
+      text-decoration:none;
+    }
+    .nav-post:hover{
+      border-color:var(--accent);
+      transform:translateY(-4px);
+      text-decoration:none;
+    }
+    .nav-label{
+      font-size:0.85rem;
+      color:var(--muted);
+      margin-bottom:0.5rem;
+    }
+    .nav-title{
+      color:var(--text);
+      font-weight:600;
+    }
+
+    footer{ 
+      text-align:center; 
+      padding:2.5rem 0; 
+      color:var(--muted); 
+      font-size:.9rem;
+      border-top:1px solid var(--border);
+    }
+
+    @media (max-width:768px){
+      body{ font-size:16px; }
+      .nav-posts{ grid-template-columns:1fr; }
+      .share-buttons{ flex-wrap:wrap; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <a href="../index.html" class="brand">
+        <span>🛡️</span>
+        <span>Francis Kuria</span>
+      </a>
+      <a href="index.html" class="back-link">← All Posts</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="article-header">
+      <div class="tags">
+        <span class="tag">SQL Injection</span>
+        <span class="tag">Web Security</span>
+        <span class="tag">Tutorial</span>
+      </div>
+      
+      <h1>Understanding SQL Injection: A Practical Guide</h1>
+      
+      <p class="lead">SQL injection remains one of the most critical web application vulnerabilities. This comprehensive guide explores how these attacks work, real-world exploitation techniques, and proven defense strategies.</p>
+      
+      <div class="article-meta">
+        <span>📅 January 20, 2026</span>
+        <span>•</span>
+        <span>⏱️ 8 min read</span>
+        <span>•</span>
+        <span>💬 12 comments</span>
+      </div>
+
+      <div class="author-info">
+        <img class="author-avatar" src="../assets/francis-avatar.webp" alt="Francis Kuria" width="60" height="60">
+        <div class="author-details">
+          <h4>Francis Kuria</h4>
+          <p>Cybersecurity Analyst & Technical Writer</p>
+        </div>
+      </div>
+    </div>
+
+    <article>
+      <div class="toc">
+        <h3>📑 Table of Contents</h3>
+        <ul>
+          <li><a href="#what-is-sqli">What is SQL Injection?</a></li>
+          <li><a href="#how-it-works">How SQL Injection Works</a></li>
+          <li><a href="#types">Types of SQL Injection</a></li>
+          <li><a href="#real-world">Real-World Attack Scenario</a></li>
+          <li><a href="#detection">Detecting SQL Injection</a></li>
+          <li><a href="#prevention">Prevention & Mitigation</a></li>
+          <li><a href="#conclusion">Conclusion</a></li>
+        </ul>
+      </div>
+
+      <h2 id="what-is-sqli">What is SQL Injection?</h2>
+      
+      <p>SQL injection (SQLi) is a code injection technique that exploits security vulnerabilities in an application's database layer. Attackers insert malicious SQL statements into input fields, manipulating the backend database to execute unintended commands.</p>
+
+      <p>This vulnerability consistently ranks in the OWASP Top 10 and can lead to:</p>
+      <ul>
+        <li>Unauthorized data access and exfiltration</li>
+        <li>Authentication bypass</li>
+        <li>Data modification or deletion</li>
+        <li>Complete system compromise in severe cases</li>
+      </ul>
+
+      <div class="callout callout-danger">
+        <h4>⚠️ Critical Impact</h4>
+        <p>SQL injection attacks have compromised millions of records across major organizations. The 2015 TalkTalk breach exposed 157,000 customer records due to a basic SQLi vulnerability, resulting in £400,000 in fines.</p>
+      </div>
+
+      <h2 id="how-it-works">How SQL Injection Works</h2>
+
+      <p>To understand SQL injection, let's examine a vulnerable login form. Consider this PHP code:</p>
+
+      <pre><code>$username = $_POST['username'];
+$password = $_POST['password'];
+
+$query = "SELECT * FROM users WHERE username='$username' AND password='$password'";
+$result = mysqli_query($connection, $query);</code></pre>
+
+      <p>This code directly concatenates user input into the SQL query. An attacker can exploit this by entering:</p>
+
+      <pre><code>Username: admin' --
+Password: anything</code></pre>
+
+      <p>The resulting query becomes:</p>
+
+      <pre><code>SELECT * FROM users WHERE username='admin' -- ' AND password='anything'</code></pre>
+
+      <p>The <code>--</code> comments out the rest of the query, effectively bypassing authentication. The database returns the admin user without verifying the password.</p>
+
+      <h2 id="types">Types of SQL Injection</h2>
+
+      <h3>1. In-Band SQL Injection</h3>
+      <p>The most common and straightforward type where attackers use the same channel to launch attacks and gather results.</p>
+
+      <p><strong>Error-Based SQLi:</strong> Attackers trigger database errors to extract information about the database structure.</p>
+
+      <pre><code>http://example.com/product?id=1'
+
+Error: You have an error in your SQL syntax near ''' at line 1</code></pre>
+
+      <p><strong>Union-Based SQLi:</strong> Uses the UNION SQL operator to combine results from multiple SELECT statements.</p>
+
+      <pre><code>http://example.com/product?id=1 UNION SELECT username,password FROM users--</code></pre>
+
+      <h3>2. Blind SQL Injection</h3>
+      <p>When the application doesn't display error messages, attackers use true/false questions to extract data.</p>
+
+      <p><strong>Boolean-Based:</strong></p>
+      <pre><code>http://example.com/product?id=1 AND 1=1  (returns normal page)
+http://example.com/product?id=1 AND 1=2  (returns different page)</code></pre>
+
+      <p><strong>Time-Based:</strong></p>
+      <pre><code>http://example.com/product?id=1; IF(1=1) WAITFOR DELAY '00:00:05'--</code></pre>
+
+      <h3>3. Out-of-Band SQL Injection</h3>
+      <p>Rare technique where data is exfiltrated through different channels like DNS or HTTP requests.</p>
+
+      <h2 id="real-world">Real-World Attack Scenario</h2>
+
+      <p>Let's walk through a complete attack chain on a vulnerable e-commerce site:</p>
+
+      <p><strong>Step 1: Discovery</strong></p>
+      <p>While browsing products, you notice URLs like <code>shop.com/product?id=42</code>. Testing with a single quote:</p>
+      <pre><code>shop.com/product?id=42'</code></pre>
+
+      <p>Returns a database error—confirming the vulnerability exists.</p>
+
+      <p><strong>Step 2: Enumeration</strong></p>
+      <p>Determine the number of columns in the current query:</p>
+      <pre><code>shop.com/product?id=42 ORDER BY 1--  (works)
+shop.com/product?id=42 ORDER BY 5--  (works)
+shop.com/product?id=42 ORDER BY 6--  (error = 5 columns)</code></pre>
+
+      <p><strong>Step 3: Finding Vulnerable Columns</strong></p>
+      <pre><code>shop.com/product?id=-1 UNION SELECT 1,2,3,4,5--</code></pre>
+
+      <p>The page displays "2" and "4", indicating those column positions are reflected in the output.</p>
+
+      <p><strong>Step 4: Database Extraction</strong></p>
+      <pre><code>shop.com/product?id=-1 UNION SELECT 1,database(),user(),4,5--</code></pre>
+
+      <p>Reveals database name and current user. From here, attackers can enumerate tables, extract credentials, and access sensitive data.</p>
+
+      <div class="callout callout-warning">
+        <h4>🔍 Ethical Reminder</h4>
+        <p>Testing for SQL injection should only be performed on systems you own or have explicit authorization to test. Unauthorized access is illegal and unethical.</p>
+      </div>
+
+      <h2 id="detection">Detecting SQL Injection</h2>
+
+      <p>Identifying SQLi vulnerabilities requires systematic testing:</p>
+
+      <h3>Manual Testing</h3>
+      <ul>
+        <li>Test with single quote (<code>'</code>) to trigger errors</li>
+        <li>Use boolean conditions: <code>1' AND '1'='1</code> vs <code>1' AND '1'='2</code></li>
+        <li>Test time delays: <code>1'; WAITFOR DELAY '00:00:05'--</code></li>
+        <li>Try SQL comments: <code>--</code>, <code>#</code>, <code>/* */</code></li>
+      </ul>
+
+      <h3>Automated Tools</h3>
+      <ul>
+        <li><strong>SQLMap:</strong> Industry-standard automated SQL injection tool</li>
+        <li><strong>Burp Suite:</strong> Professional web vulnerability scanner</li>
+        <li><strong>OWASP ZAP:</strong> Free, open-source security testing tool</li>
+      </ul>
+
+      <pre><code># SQLMap example
+sqlmap -u "http://example.com/product?id=1" --dbs
+sqlmap -u "http://example.com/product?id=1" -D shop_db --tables
+sqlmap -u "http://example.com/product?id=1" -D shop_db -T users --dump</code></pre>
+
+      <h2 id="prevention">Prevention & Mitigation</h2>
+
+      <p>Defending against SQL injection requires multiple layers of protection:</p>
+
+      <h3>1. Parameterized Queries (Prepared Statements)</h3>
+      <p>The most effective defense. Never concatenate user input into SQL queries.</p>
+
+      <p><strong>Vulnerable Code:</strong></p>
+      <pre><code>$query = "SELECT * FROM users WHERE username='$username'";</code></pre>
+
+      <p><strong>Secure Code (PHP with PDO):</strong></p>
+      <pre><code>$stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
+$stmt->execute([$username]);</code></pre>
+
+      <p><strong>Secure Code (Python):</strong></p>
+      <pre><code>cursor.execute("SELECT * FROM users WHERE username = %s", (username,))</code></pre>
+
+      <h3>2. Input Validation</h3>
+      <p>Validate and sanitize all user input:</p>
+      <ul>
+        <li>Use whitelist validation for expected formats</li>
+        <li>Reject input containing SQL keywords when not expected</li>
+        <li>Implement proper data type validation</li>
+      </ul>
+
+      <pre><code>// Validate numeric ID
+if (!is_numeric($id)) {
+    throw new Exception("Invalid ID format");
+}</code></pre>
+
+      <h3>3. Least Privilege Principle</h3>
+      <p>Database accounts should have minimal necessary permissions:</p>
+      <ul>
+        <li>Read-only access for SELECT operations</li>
+        <li>No DROP, CREATE, or ALTER permissions for application accounts</li>
+        <li>Separate accounts for different application functions</li>
+      </ul>
+
+      <h3>4. Additional Defenses</h3>
+      <ul>
+        <li><strong>ORM Frameworks:</strong> Use tools like Django ORM, SQLAlchemy, or Entity Framework that handle parameterization</li>
+        <li><strong>Web Application Firewalls (WAF):</strong> Deploy WAFs to detect and block common SQLi patterns</li>
+        <li><strong>Error Handling:</strong> Never display detailed database errors to users</li>
+        <li><strong>Regular Updates:</strong> Keep database software and frameworks current</li>
+      </ul>
+
+      <div class="callout">
+        <h4>💡 Defense in Depth</h4>
+        <p>Relying on a single defensive measure is insufficient. Implement multiple layers of protection to create robust security posture. If one control fails, others provide backup protection.</p>
+      </div>
+
+      <h2 id="conclusion">Conclusion</h2>
+
+      <p>SQL injection remains a critical vulnerability despite being well-documented and preventable. Understanding how these attacks work is essential for both offensive security professionals and developers building secure applications.</p>
+
+      <p><strong>Key Takeaways:</strong></p>
+      <ul>
+        <li>Always use parameterized queries—never concatenate user input</li>
+        <li>Implement defense in depth with multiple security controls</li>
+        <li>Test your applications regularly using both manual and automated methods</li>
+        <li>Follow the principle of least privilege for database accounts</li>
+        <li>Stay informed about emerging attack techniques and defense strategies</li>
+      </ul>
+
+      <p>SQL injection is preventable with proper coding practices. By understanding the mechanics of these attacks and implementing robust defenses, we can significantly reduce this attack surface.</p>
+
+      <div class="callout">
+        <h4>📚 Further Learning</h4>
+        <p>Practice SQL injection techniques safely using platforms like PortSwigger Web Security Academy, OWASP WebGoat, or HackTheBox. Hands-on experience in controlled environments is invaluable for understanding both attack and defense.</p>
+      </div>
+    </article>
+
+    <div class="article-footer">
+      <div class="share-buttons">
+        <span style="color:var(--muted);margin-right:0.5rem;">Share:</span>
+        <a href="#" class="share-btn">Twitter</a>
+        <a href="#" class="share-btn">LinkedIn</a>
+        <a href="#" class="share-btn">Copy Link</a>
+      </div>
+
+      <div class="nav-posts">
+        <a href="api-security-practices.html" class="nav-post">
+          <div class="nav-label">← Previous Post</div>
+          <div class="nav-title">5 Essential API Security Best Practices</div>
+        </a>
+        <a href="ctf-walkthrough-web.html" class="nav-post" style="text-align:right;">
+          <div class="nav-label">Next Post →</div>
+          <div class="nav-title">CTF Walkthrough: Web Exploitation Challenge</div>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Francis Kuria • <a href="../index.html">Portfolio</a> • <a href="index.html">Blog</a></p>
+    </div>
+  </footer>
+</body>
+</html>
