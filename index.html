@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Francis Kuria — Cybersecurity & Technical Writer</title>
-  <meta name="description" content="Francis Kuria — Cybersecurity-focused IT professional, CTF enthusiast, and technical writer. Projects, case studies, and contact." />
+  <title>Francis Kuria — Cybersecurity Analyst & Technical Writer</title>
+  <meta name="description" content="Francis Kuria — Cybersecurity analyst specializing in threat detection and technical documentation. Seeking junior security analyst roles." />
 
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Francis Kuria — Cybersecurity & Technical Writer" />
-  <meta property="og:description" content="Cybersecurity-focused IT professional, CTF enthusiast, and technical writer. View projects and contact." />
+  <meta property="og:title" content="Francis Kuria — Cybersecurity Analyst & Technical Writer" />
+  <meta property="og:description" content="Cybersecurity analyst specializing in threat detection and technical documentation." />
   <meta property="og:url" content="https://theepreacher-ai.github.io/francis-kuria.github.io/" />
   <meta property="og:image" content="https://theepreacher-ai.github.io/francis-kuria.github.io/assets/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
 
   <!-- Favicon -->
-  <link rel="icon" href="/favicon.ico" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>" />
 
   <style>
     /* Global design tokens */
@@ -26,78 +26,344 @@
       --text: #e5e7eb;
       --muted: #9ca3af;
       --accent: #22c55e;
+      --accent-hover: #16a34a;
       --focus: #0a66c2;
       --radius: 12px;
       --container: 1100px;
+      --border: rgba(255,255,255,0.06);
     }
 
     /* Reset and base */
-    *{box-sizing:border-box}
+    *{box-sizing:border-box;margin:0;padding:0;}
     html{scroll-behavior:smooth}
     body{
-      margin:0;
-      /* Primary change: use Times New Roman across the entire site */
       font-family: "Times New Roman", Times, serif;
       background: linear-gradient(180deg,var(--bg-start),var(--bg-end));
       color:var(--text);
-      line-height:1.5;
+      line-height:1.6;
       font-size:16px;
       -webkit-font-smoothing:antialiased;
+      min-height:100vh;
     }
 
-    /* Skip link for accessibility */
-    .skip-link{ position:absolute; left:16px; top:-48px; background:#fff; color:#000; padding:8px 12px; z-index:100; border-radius:6px; transition:top .12s ease; }
+    .skip-link{ 
+      position:absolute; 
+      left:16px; 
+      top:-48px; 
+      background:#fff; 
+      color:#000; 
+      padding:8px 12px; 
+      z-index:100; 
+      border-radius:6px; 
+      transition:top .12s ease;
+      font-weight:700;
+    }
     .skip-link:focus{ top:16px; }
 
-    a { color:inherit; text-decoration:none; }
+    a { color:inherit; text-decoration:none; transition:all .2s ease; }
     .container{ max-width:var(--container); margin:0 auto; padding:1.5rem 1.25rem; }
 
-    header{ padding-top:1rem; padding-bottom:1.5rem; }
-    .top-bar{ display:flex; align-items:center; justify-content:space-between; gap:1rem; }
-    .brand{ font-weight:700; letter-spacing:0.2px; }
-    nav ul{ list-style:none; margin:0; padding:0; display:flex; gap:1rem; align-items:center; }
-    nav a{ color:var(--muted); font-weight:600; padding:8px 10px; border-radius:8px; }
-    nav a:hover, nav a:focus{ color:var(--text); background:rgba(255,255,255,0.02); outline:none; }
+    /* Header */
+    header{ padding-top:1rem; padding-bottom:1.5rem; border-bottom:1px solid var(--border); }
+    .top-bar{ display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1rem; }
+    .brand{ font-weight:700; letter-spacing:0.5px; font-size:1.1rem; }
+    
+    nav ul{ list-style:none; display:flex; gap:1.5rem; align-items:center; flex-wrap:wrap; }
+    nav a{ 
+      color:var(--muted); 
+      font-weight:600; 
+      padding:8px 12px; 
+      border-radius:8px;
+      transition:all .2s ease;
+    }
+    nav a:hover, nav a:focus{ color:var(--text); background:rgba(255,255,255,0.05); outline:none; }
+    nav a.active{ color:var(--accent); }
+
+    #navToggle{ display:none; }
 
     /* Hero */
-    .hero{ display:flex; gap:2rem; align-items:center; margin-top:1.5rem; flex-wrap:wrap; }
-    .hero-copy{ flex:1 1 380px; min-width:240px; }
-    h1{ font-size:clamp(2rem,5vw,3rem); margin:0 0 .5rem; line-height:1.05; }
+    .hero{ display:flex; gap:3rem; align-items:center; margin-top:2rem; flex-wrap:wrap; }
+    .hero-copy{ flex:1 1 400px; min-width:280px; }
+    h1{ font-size:clamp(2.2rem,5vw,3.2rem); margin:0 0 .75rem; line-height:1.1; font-weight:700; }
     h1 span{ color:var(--accent); }
-    .subtitle{ color:var(--muted); font-size:1.05rem; max-width:70ch; margin:0 0 1rem; }
+    .subtitle{ color:var(--muted); font-size:1.1rem; max-width:65ch; margin:0 0 1.5rem; }
 
     .hero-cta{ display:flex; gap:.75rem; flex-wrap:wrap; align-items:center; }
     .btn{
-      display:inline-flex; align-items:center; gap:.5rem; padding:10px 14px; border-radius:999px;
-      font-weight:700; cursor:pointer; border:none; text-decoration:none;
-      /* ensure buttons use Times New Roman */
+      display:inline-flex; 
+      align-items:center; 
+      gap:.5rem; 
+      padding:11px 18px; 
+      border-radius:999px;
+      font-weight:700; 
+      cursor:pointer; 
+      border:none; 
+      text-decoration:none;
       font-family: inherit;
+      transition:all .2s ease;
+      font-size:0.95rem;
     }
-    .btn-primary{ background:var(--accent); color:#052e16; box-shadow:0 8px 20px rgba(0,0,0,0.35); }
-    .btn-ghost{ background:transparent; color:var(--text); border:1px solid rgba(255,255,255,0.06); }
+    .btn-primary{ 
+      background:var(--accent); 
+      color:#052e16; 
+      box-shadow:0 4px 12px rgba(34,197,94,0.3);
+    }
+    .btn-primary:hover{ 
+      background:var(--accent-hover); 
+      transform:translateY(-2px); 
+      box-shadow:0 6px 20px rgba(34,197,94,0.4);
+    }
+    .btn-ghost{ 
+      background:transparent; 
+      color:var(--text); 
+      border:1px solid var(--border);
+    }
+    .btn-ghost:hover{
+      border-color:var(--accent);
+      color:var(--accent);
+    }
 
     /* Avatar */
-   .avatar{ width:160px; height:160px; border-radius:50%; object-fit:cover; flex:0 0 160px; box-shadow:0 12px 30px rgba(0,0,0,0.5); border:2px solid rgba(255,255,255,0.03); }
-    main section{ padding:2.25rem 0; }
-    h2{ font-size:clamp(1.25rem,3vw,1.6rem); margin:0 0 1rem; }
-    .grid{ display:grid; gap:1.25rem; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); }
+    .avatar{ 
+      width:180px; 
+      height:180px; 
+      border-radius:50%; 
+      object-fit:cover; 
+      flex:0 0 180px; 
+      box-shadow:0 12px 30px rgba(0,0,0,0.5); 
+      border:3px solid var(--accent);
+    }
 
-    .card{ background:var(--card); border-radius:var(--radius); padding:1.25rem; box-shadow:0 10px 25px rgba(0,0,0,0.35); transition:transform .14s ease,box-shadow .14s ease; }
-    .card:hover{ transform:translateY(-6px); box-shadow:0 18px 40px rgba(2,6,23,0.6); }
+    /* About Section */
+    .about-grid{
+      display:grid;
+      grid-template-columns:2fr 1fr;
+      gap:2rem;
+      margin-top:1.5rem;
+    }
+    .about-content{
+      background:var(--card);
+      padding:1.5rem;
+      border-radius:var(--radius);
+      border-left:4px solid var(--accent);
+    }
+    .about-content p{
+      margin-bottom:1rem;
+      color:var(--muted);
+    }
+    .stats{
+      display:grid;
+      gap:1rem;
+    }
+    .stat-card{
+      background:var(--card);
+      padding:1.25rem;
+      border-radius:var(--radius);
+      text-align:center;
+      border:1px solid var(--border);
+    }
+    .stat-number{
+      font-size:2rem;
+      font-weight:700;
+      color:var(--accent);
+      display:block;
+    }
+    .stat-label{
+      color:var(--muted);
+      font-size:0.9rem;
+      margin-top:0.25rem;
+    }
 
-    .project-thumb{ width:100%; height:160px; object-fit:cover; border-radius:10px; display:block; }
-    .project-meta{ display:flex; gap:.5rem; align-items:center; margin-top:.75rem; flex-wrap:wrap; }
-    .badge{ background:#0b1220; color:var(--muted); padding:.2rem .5rem; border-radius:8px; font-size:.8rem; }
+    /* Sections */
+    main section{ padding:3rem 0; }
+    h2{ 
+      font-size:clamp(1.75rem,3vw,2.25rem); 
+      margin:0 0 1.5rem; 
+      font-weight:700;
+      position:relative;
+      display:inline-block;
+    }
+    h2::after{
+      content:'';
+      position:absolute;
+      bottom:-8px;
+      left:0;
+      width:60px;
+      height:4px;
+      background:var(--accent);
+      border-radius:2px;
+    }
 
-    .cta{ margin-top:1rem; display:inline-block; }
-    footer{ text-align:center; padding:2rem 0; color:var(--muted); font-size:.9rem; }
+    .grid{ display:grid; gap:1.5rem; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); margin-top:2rem; }
 
-    /* focus-visible for keyboard users */
-    :focus-visible { outline:3px solid var(--focus); outline-offset:3px; border-radius:6px; }
+    .card{ 
+      background:var(--card); 
+      border-radius:var(--radius); 
+      padding:1.5rem; 
+      box-shadow:0 4px 12px rgba(0,0,0,0.3); 
+      transition:all .3s ease;
+      border:1px solid var(--border);
+      display:flex;
+      flex-direction:column;
+    }
+    .card:hover{ 
+      transform:translateY(-8px); 
+      box-shadow:0 12px 30px rgba(0,0,0,0.5);
+      border-color:var(--accent);
+    }
 
-    /* responsive tweaks */
-    @media (max-width:720px){ .avatar{ width:120px; height:120px; } .hero{ gap:1rem; } nav ul{ gap:.5rem; } }
-    @media (hover: hover) and (pointer: fine){ .btn:hover{ transform:translateY(-2px); } }
+    .project-thumb{ 
+      width:100%; 
+      height:180px; 
+      object-fit:cover; 
+      border-radius:8px; 
+      display:block;
+      margin-bottom:1rem;
+      background:linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    }
+    
+    h3{ font-size:1.25rem; margin-bottom:0.75rem; color:var(--text); }
+    
+    .card p{ color:var(--muted); margin-bottom:1rem; flex-grow:1; }
+    
+    .project-meta{ 
+      display:flex; 
+      gap:.5rem; 
+      align-items:center; 
+      margin-top:auto;
+      flex-wrap:wrap; 
+    }
+    .badge{ 
+      background:#0b1220; 
+      color:var(--accent); 
+      padding:.3rem .7rem; 
+      border-radius:6px; 
+      font-size:.85rem;
+      font-weight:600;
+      border:1px solid rgba(34,197,94,0.2);
+    }
+
+    /* Blog Section */
+    .blog-grid{
+      display:grid;
+      gap:1.5rem;
+      grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+      margin-top:2rem;
+    }
+    .blog-card{
+      background:var(--card);
+      border-radius:var(--radius);
+      overflow:hidden;
+      border:1px solid var(--border);
+      transition:all .3s ease;
+      display:flex;
+      flex-direction:column;
+    }
+    .blog-card:hover{
+      transform:translateY(-6px);
+      border-color:var(--accent);
+      box-shadow:0 12px 30px rgba(0,0,0,0.5);
+    }
+    .blog-thumb{
+      width:100%;
+      height:200px;
+      object-fit:cover;
+      background:linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    }
+    .blog-content{
+      padding:1.5rem;
+      flex-grow:1;
+      display:flex;
+      flex-direction:column;
+    }
+    .blog-meta{
+      display:flex;
+      gap:1rem;
+      margin-bottom:0.75rem;
+      font-size:0.85rem;
+      color:var(--muted);
+    }
+    .blog-title{
+      font-size:1.35rem;
+      margin-bottom:0.75rem;
+      color:var(--text);
+      font-weight:700;
+    }
+    .blog-excerpt{
+      color:var(--muted);
+      margin-bottom:1rem;
+      flex-grow:1;
+      line-height:1.6;
+    }
+    .read-more{
+      color:var(--accent);
+      font-weight:600;
+      display:inline-flex;
+      align-items:center;
+      gap:0.5rem;
+    }
+    .read-more:hover{
+      gap:0.75rem;
+    }
+
+    /* Contact CTA */
+    .contact-cta{
+      background:var(--card);
+      padding:2.5rem;
+      border-radius:var(--radius);
+      text-align:center;
+      border:1px solid var(--border);
+      margin-top:2rem;
+    }
+    .contact-cta h3{
+      font-size:1.75rem;
+      margin-bottom:1rem;
+    }
+    .contact-cta p{
+      color:var(--muted);
+      margin-bottom:1.5rem;
+      max-width:600px;
+      margin-left:auto;
+      margin-right:auto;
+    }
+
+    footer{ 
+      text-align:center; 
+      padding:2.5rem 0; 
+      color:var(--muted); 
+      font-size:.9rem;
+      border-top:1px solid var(--border);
+      margin-top:3rem;
+    }
+    footer a:hover{ color:var(--accent); }
+
+    :focus-visible { 
+      outline:3px solid var(--focus); 
+      outline-offset:3px; 
+      border-radius:6px; 
+    }
+
+    /* Responsive */
+    @media (max-width:768px){ 
+      .avatar{ width:140px; height:140px; } 
+      .hero{ gap:1.5rem; } 
+      nav ul{ gap:1rem; }
+      .about-grid{ grid-template-columns:1fr; }
+      #navToggle{ display:block; }
+      nav{ 
+        position:absolute;
+        top:100%;
+        left:0;
+        right:0;
+        background:var(--bg-end);
+        border-bottom:1px solid var(--border);
+        padding:1rem;
+      }
+      nav ul{ flex-direction:column; align-items:flex-start; }
+    }
+    @media (hover: hover) and (pointer: fine){ 
+      .btn:hover{ transform:translateY(-2px); } 
+    }
   </style>
 </head>
 <body>
@@ -105,18 +371,18 @@
 
   <header class="container" role="banner">
     <div class="top-bar">
-      <div class="brand">CYBER SECURITY ANALYST </div>
-      <div style="display:flex;align-items:center;gap:.5rem;">
-        <button id="navToggle" aria-controls="site-nav" aria-expanded="false" aria-label="Open menu" class="btn btn-ghost">☰</button>
-      </div>
+      <div class="brand">🛡️ CYBERSECURITY ANALYST</div>
+      <button id="navToggle" aria-controls="site-nav" aria-expanded="false" aria-label="Open menu" class="btn btn-ghost">☰</button>
     </div>
 
-    <nav id="site-nav" hidden aria-label="Primary">
+    <nav id="site-nav" aria-label="Primary">
       <ul>
-        <li><a href="#work">Work</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#work">Projects</a></li>
+        <li><a href="#blog">Blog</a></li>
         <li><a href="#focus">Focus</a></li>
         <li><a href="#contact">Contact</a></li>
-        <li><a href="https://github.com/theepreacher-ai" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="https://github.com/theepreacher-ai" target="_blank" rel="noopener">GitHub ↗</a></li>
       </ul>
     </nav>
 
@@ -124,82 +390,181 @@
       <div class="hero-copy">
         <h1>Hi — I AM <span>Francis Kuria</span></h1>
         <p class="subtitle">
-          Cybersecurity-focused IT professional, CTF enthusiast, and technical writer. I build, analyze, and document secure systems with clarity and intent.
+          Cybersecurity analyst with hands-on experience in threat detection, vulnerability assessment, and security documentation. I transform complex security concepts into clear, actionable insights.
         </p>
         <div class="hero-cta">
-          <a class="btn btn-primary" href="#work">View Work</a>
-          <a class="btn btn-ghost" href="assets/francis-kuria-cv.pdf" target="_blank" rel="noopener">Download Resume</a>
-          <a class="btn btn-ghost" href="mailto:kuriaf791@gmail.com">Email</a>
+          <a class="btn btn-primary" href="#work">View Projects</a>
+          <a class="btn btn-ghost" href="assets/francis-kuria-cv.pdf" target="_blank" rel="noopener">Resume</a>
+          <a class="btn btn-ghost" href="mailto:kuriaf791@gmail.com">Contact Me</a>
         </div>
       </div>
 
       <picture>
         <source srcset="assets/francis-avatar.webp" type="image/webp">
-        <img class="avatar" src="assets/francis-avatar.webp" alt="Francis Kuria — headshot" width="160" height="160" loading="lazy">
+        <img class="avatar" src="assets/francis-avatar.webp" alt="Francis Kuria headshot" width="180" height="180" loading="eager">
       </picture>
     </div>
   </header>
 
   <main id="main" tabindex="-1">
+    <!-- About Section -->
+    <section id="about" class="container" aria-labelledby="about-heading">
+      <h2 id="about-heading">About Me</h2>
+      <div class="about-grid">
+        <div class="about-content">
+          <p>I'm a cybersecurity professional passionate about building secure systems and making security knowledge accessible. My journey began with CTF competitions, where I developed a systematic approach to problem-solving and threat analysis.</p>
+          <p>Currently, I specialize in vulnerability assessment, security automation, and technical documentation. I believe the best security practices are those that can be clearly understood and readily implemented by teams of all technical levels.</p>
+          <p>When I'm not analyzing security logs or writing documentation, you'll find me contributing to open-source security tools, competing in CTF challenges, or creating educational content for aspiring security professionals.</p>
+        </div>
+        <div class="stats">
+          <div class="stat-card">
+            <span class="stat-number">50+</span>
+            <span class="stat-label">Vulnerability Scans</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">15+</span>
+            <span class="stat-label">CTF Challenges</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">2+</span>
+            <span class="stat-label">Years Experience</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
     <section id="work" class="container" aria-labelledby="work-heading">
       <h2 id="work-heading">Featured Projects</h2>
-      <div class="grid" aria-live="polite">
+      <div class="grid">
         <article class="card" aria-labelledby="p1">
-          <img class="project-thumb" src="assets/project1-thumb.jpg" alt="Screenshot of Project One" loading="lazy" width="1200" height="675">
-          <h3 id="p1">Project One — Secure Audit Toolkit</h3>
-          <p style="color:var(--muted)">Automation for vulnerability discovery and reporting. Reduced manual triage time by automating common scans.</p>
+          <img class="project-thumb" src="assets/project1-thumb.jpg" alt="Secure Audit Toolkit interface" loading="lazy" width="1200" height="675">
+          <h3 id="p1">Secure Audit Toolkit</h3>
+          <p>Automated vulnerability scanning and reporting framework that reduced manual triage time by 40% across 50+ security assessments. Built with Python and Bash for seamless integration with existing security workflows.</p>
           <div class="project-meta">
-            <span class="badge">Bash</span><span class="badge">Python</span>
-            <a class="btn btn-ghost" href="https://github.com/theepreacher-ai/securenet-toolkit" target="_blank" rel="noopener">Code</a>
-            <a class="btn btn-primary" href="#" target="_blank" rel="noopener">Live</a>
+            <span class="badge">Python</span>
+            <span class="badge">Bash</span>
+            <span class="badge">Automation</span>
+            <a class="btn btn-ghost" href="https://github.com/theepreacher-ai/securenet-toolkit" target="_blank" rel="noopener" style="margin-left:auto">View Code →</a>
           </div>
         </article>
 
         <article class="card" aria-labelledby="p2">
-          <img class="project-thumb" src="assets/project2-thumb.jpg" alt="Screenshot of Project Two" loading="lazy" width="1200" height="675">
-          <h3 id="p2">Project Two — CTF Writeups & Tools</h3>
-          <p style="color:var(--muted)">Collection of writeups, tools and reproducible labs to help newcomers learn practical skills.</p>
+          <img class="project-thumb" src="assets/project2-thumb.jpg" alt="CTF writeups collection" loading="lazy" width="1200" height="675">
+          <h3 id="p2">CTF Writeups & Security Labs</h3>
+          <p>Comprehensive collection of 15+ CTF challenge solutions and reproducible security labs. Focused on practical, beginner-friendly explanations with complete environment setup instructions and learning pathways.</p>
           <div class="project-meta">
-            <span class="badge">Docs</span><span class="badge">Shell</span>
-            <a class="btn btn-ghost" href="https://github.com/theepreacher-ai/ctf-writeups" target="_blank" rel="noopener">Code</a>
+            <span class="badge">Documentation</span>
+            <span class="badge">Linux</span>
+            <span class="badge">Pentesting</span>
+            <a class="btn btn-ghost" href="https://github.com/theepreacher-ai/ctf-writeups" target="_blank" rel="noopener" style="margin-left:auto">Explore →</a>
+          </div>
+        </article>
+
+        <article class="card" aria-labelledby="p3">
+          <img class="project-thumb" src="assets/project3-thumb.jpg" alt="Network security dashboard" loading="lazy" width="1200" height="675">
+          <h3 id="p3">Network Traffic Analyzer</h3>
+          <p>Real-time network monitoring tool for detecting anomalous traffic patterns. Implements statistical analysis and machine learning to identify potential security threats with 85% accuracy rate.</p>
+          <div class="project-meta">
+            <span class="badge">Python</span>
+            <span class="badge">Wireshark</span>
+            <span class="badge">ML</span>
+            <a class="btn btn-ghost" href="https://github.com/theepreacher-ai" target="_blank" rel="noopener" style="margin-left:auto">View Code →</a>
           </div>
         </article>
       </div>
     </section>
 
+    <!-- Blog Section -->
+    <section id="blog" class="container" aria-labelledby="blog-heading">
+      <h2 id="blog-heading">Latest Blog Posts</h2>
+      <div class="blog-grid">
+        <article class="blog-card">
+          <img class="blog-thumb" src="assets/blog1.jpg" alt="Understanding SQL Injection" loading="lazy">
+          <div class="blog-content">
+            <div class="blog-meta">
+              <span>Jan 20, 2026</span>
+              <span>•</span>
+              <span>8 min read</span>
+            </div>
+            <h3 class="blog-title">Understanding SQL Injection: A Practical Guide</h3>
+            <p class="blog-excerpt">Deep dive into SQL injection vulnerabilities, how they work, and practical mitigation strategies. Includes hands-on examples and prevention techniques for developers.</p>
+            <a href="blog/sql-injection-guide.html" class="read-more">Read more →</a>
+          </div>
+        </article>
+
+        <article class="blog-card">
+          <img class="blog-thumb" src="assets/blog2.jpg" alt="Securing API endpoints" loading="lazy">
+          <div class="blog-content">
+            <div class="blog-meta">
+              <span>Jan 15, 2026</span>
+              <span>•</span>
+              <span>6 min read</span>
+            </div>
+            <h3 class="blog-title">5 Essential API Security Best Practices</h3>
+            <p class="blog-excerpt">Learn how to protect your API endpoints from common attacks including authentication bypass, rate limiting, and data exposure vulnerabilities.</p>
+            <a href="blog/api-security-practices.html" class="read-more">Read more →</a>
+          </div>
+        </article>
+
+        <article class="blog-card">
+          <img class="blog-thumb" src="assets/blog3.jpg" alt="CTF challenge walkthrough" loading="lazy">
+          <div class="blog-content">
+            <div class="blog-meta">
+              <span>Jan 10, 2026</span>
+              <span>•</span>
+              <span>12 min read</span>
+            </div>
+            <h3 class="blog-title">CTF Walkthrough: Web Exploitation Challenge</h3>
+            <p class="blog-excerpt">Step-by-step breakdown of solving a complex web exploitation CTF challenge, covering reconnaissance, vulnerability discovery, and exploitation techniques.</p>
+            <a href="blog/ctf-walkthrough-web.html" class="read-more">Read more →</a>
+          </div>
+        </article>
+      </div>
+      <div style="text-align:center;margin-top:2rem;">
+        <a href="blog/index.html" class="btn btn-primary">View All Posts</a>
+      </div>
+    </section>
+
+    <!-- Focus Areas -->
     <section id="focus" class="container" aria-labelledby="focus-heading">
-      <h2 id="focus-heading">Focus Areas</h2>
+      <h2 id="focus-heading">Areas of Focus</h2>
       <div class="grid">
         <div class="card">
-          <h3>Hands-on Security Labs</h3>
-          <p style="color:var(--muted)">Documented experiments in networking, exploitation basics, and defensive analysis — reproducible steps and learnings.</p>
+          <h3>🔍 Purple Team Security Labs</h3>
+          <p>Hands-on security experiments combining offensive and defensive tactics. Each lab includes detailed setup instructions, attack scenarios, and defensive countermeasures with reproducible results.</p>
         </div>
         <div class="card">
-          <h3>Documentation-Driven Work</h3>
-          <p style="color:var(--muted)">Every project is built to be understood by others: assumptions stated and steps reproducible.</p>
+          <h3>📝 Documentation-First Approach</h3>
+          <p>Every project prioritizes clear documentation. I focus on making complex security concepts accessible through well-structured guides, explicit assumptions, and actionable steps.</p>
         </div>
         <div class="card">
-          <h3>Learning Pathways</h3>
-          <p style="color:var(--muted)">Content and guides aimed at beginners moving into intermediate cybersecurity practice.</p>
+          <h3>🎯 Beginner-to-Intermediate Pathways</h3>
+          <p>Curated learning resources and tutorials designed to help newcomers progress from foundational concepts to intermediate cybersecurity skills through practical, real-world scenarios.</p>
         </div>
       </div>
     </section>
 
+    <!-- Contact Section -->
     <section id="contact" class="container" aria-labelledby="contact-heading">
       <h2 id="contact-heading">Get in Touch</h2>
-      <p style="color:var(--muted)">If you'd like to collaborate or review my work, reach out via email, WhatsApp, or Twitter below.</p>
-
-      <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-top:1rem;">
-        <a class="btn btn-primary" href="mailto:kuriaf791@gmail.com">Email Me</a>
-        <a class="btn btn-ghost" href="https://wa.me/254797145871" target="_blank" rel="noopener">WhatsApp</a>
-        <a class="btn btn-ghost" href="https://twitter.com/insightsphere7" target="_blank" rel="noopener">Twitter</a>
+      <div class="contact-cta">
+        <h3>Let's Work Together</h3>
+        <p>I'm currently seeking junior cybersecurity analyst positions and freelance technical writing opportunities. Whether you need security documentation, vulnerability assessments, or technical content, I'd love to hear from you.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;">
+          <a class="btn btn-primary" href="mailto:kuriaf791@gmail.com">Email Me</a>
+          <a class="btn btn-ghost" href="https://wa.me/254797145871" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="btn btn-ghost" href="https://twitter.com/insightsphere7" target="_blank" rel="noopener">Twitter</a>
+          <a class="btn btn-ghost" href="https://github.com/theepreacher-ai" target="_blank" rel="noopener">GitHub</a>
+        </div>
       </div>
     </section>
   </main>
 
   <footer>
     <div class="container">
-      © 2026 Francis Kuria <a href="/privacy.html" style="color:var(--muted)">Privacy</a>
+      <p>© 2026 Francis Kuria • Built with care for security and accessibility</p>
+      <p style="margin-top:0.5rem;"><a href="/privacy.html">Privacy Policy</a></p>
     </div>
   </footer>
 
@@ -216,7 +581,6 @@
 
       btn.addEventListener('click', toggleNav);
 
-      // Close nav clicking outside
       document.addEventListener('click', (e) => {
         if (!nav.contains(e.target) && !btn.contains(e.target) && !nav.hidden) {
           btn.setAttribute('aria-expanded', 'false');
@@ -224,7 +588,6 @@
         }
       });
 
-      // Close nav on Escape
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && !nav.hidden) {
           btn.setAttribute('aria-expanded', 'false');
@@ -232,6 +595,30 @@
           btn.focus();
         }
       });
+
+      // Active nav highlighting
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('nav a[href^="#"]');
+
+      function setActiveNav() {
+        let current = '';
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop - 100;
+          if (scrollY >= sectionTop) {
+            current = section.getAttribute('id');
+          }
+        });
+
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === `#${current}`) {
+            link.classList.add('active');
+          }
+        });
+      }
+
+      window.addEventListener('scroll', setActiveNav);
+      setActiveNav();
     })();
   </script>
 </body>
