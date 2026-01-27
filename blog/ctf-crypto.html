@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cracking the Code: Introduction to CTF Crypto Challenges — Francis Kuria</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #3a86ff;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3a86ff;
+            text-decoration: none;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #3a86ff;
+        }
+        
+        .article-header {
+            margin-bottom: 40px;
+        }
+        
+        .article-meta {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            background: rgba(58, 134, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: #3a86ff;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        h1 {
+            font-size: 42px;
+            color: #ffffff;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        h2 {
+            font-size: 32px;
+            color: #ffffff;
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3a86ff;
+        }
+        
+        h3 {
+            font-size: 24px;
+            color: #3a86ff;
+            margin: 30px 0 15px;
+        }
+        
+        h4 {
+            font-size: 20px;
+            color: #66b3ff;
+            margin: 20px 0 10px;
+        }
+        
+        p {
+            margin-bottom: 20px;
+            font-size: 17px;
+            color: #d0d0d0;
+        }
+        
+        code {
+            background: rgba(58, 134, 255, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #3a86ff;
+            font-size: 15px;
+        }
+        
+        pre {
+            background: #0d1117;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border-left: 4px solid #3a86ff;
+        }
+        
+        pre code {
+            background: none;
+            padding: 0;
+            color: #e0e0e0;
+            font-size: 14px;
+            display: block;
+            line-height: 1.5;
+        }
+        
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            color: #d0d0d0;
+        }
+        
+        li {
+            margin-bottom: 10px;
+            font-size: 17px;
+        }
+        
+        .highlight {
+            background: rgba(58, 134, 255, 0.1);
+            border-left: 4px solid #3a86ff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .challenge-box {
+            background: rgba(139, 69, 255, 0.1);
+            border-left: 4px solid #8b45ff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            color: #3a86ff;
+            text-decoration: none;
+            margin-top: 40px;
+            padding: 10px 20px;
+            border: 2px solid #3a86ff;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        .back-link:hover {
+            background: #3a86ff;
+            color: #ffffff;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #888;
+            margin-top: 60px;
+            border-top: 1px solid rgba(58, 134, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="../index.html" class="logo">🛡️ Francis Kuria</a>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../index.html#work">Projects</a></li>
+                <li><a href="index.html">Blog</a></li>
+                <li><a href="../index.html#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <article>
+            <div class="article-header">
+                <div class="article-meta">
+                    <span class="tag">🧩 CTF</span>
+                    <span class="tag">Cryptography</span>
+                    <span>📅 Dec 20, 2025</span>
+                    <span>⏱️ 9 min read</span>
+                </div>
+                <h1>Cracking the Code: Introduction to CTF Crypto Challenges</h1>
+            </div>
+
+            <p>Cryptography challenges in CTF competitions can seem daunting at first. Between RSA, AES, diffie-Hellman, and exotic ciphers, there's a lot to learn. But here's the secret: most CTF crypto challenges aren't about breaking modern cryptography (that would take millions of years). Instead, they test your understanding of common implementation mistakes and mathematical weaknesses.</p>
+
+            <p>In this guide, I'll walk you through the fundamentals and share practical techniques that have helped me solve dozens of CTF crypto challenges.</p>
+
+            <h2>Classical Ciphers: The Foundation</h2>
+
+            <p>Before diving into modern cryptography, it's essential to understand classical ciphers. These appear frequently in beginner CTF challenges and teach fundamental concepts.</p>
+
+            <h3>Caesar Cipher</h3>
+
+            <p>The Caesar cipher shifts each letter by a fixed number of positions. With only 25 possible keys, brute force is trivial:</p>
+
+            <pre><code>def caesar_decrypt(ciphertext, shift):
+    result = ""
+    for char in ciphertext:
+        if char.isalpha():
+            base = ord('A') if char.isupper() else ord('a')
+            result += chr((ord(char) - base - shift) % 26 + base)
+        else:
+            result += char
+    return result
+
+# Brute force all 25 shifts
+ciphertext = "Khoor Zruog"
+for shift in range(26):
+    print(f"Shift {shift}: {caesar_decrypt(ciphertext, shift)}")</code></pre>
+
+            <h3>Vigenère Cipher</h3>
+
+            <p>The Vigenère cipher uses a keyword to shift letters. Breaking it involves finding the key length using the Kasiski examination or Index of Coincidence, then performing frequency analysis:</p>
+
+            <pre><code>def calculate_ic(text):
+    """Calculate Index of Coincidence"""
+    text = ''.join(c for c in text.upper() if c.isalpha())
+    n = len(text)
+    freqs = {}
+    for char in text:
+        freqs[char] = freqs.get(char, 0) + 1
+    
+    ic = sum(f * (f - 1) for f in freqs.values()) / (n * (n - 1))
+    return ic
+
+def find_key_length(ciphertext, max_length=20):
+    """Find most likely key length using IC"""
+    results = []
+    for length in range(1, max_length + 1):
+        splits = [''.join(ciphertext[i::length]) for i in range(length)]
+        avg_ic = sum(calculate_ic(s) for s in splits) / length
+        results.append((length, avg_ic))
+    
+    # English text has IC ≈ 0.065
+    return sorted(results, key=lambda x: abs(x[1] - 0.065))[0][0]</code></pre>
+
+            <h3>Substitution Ciphers</h3>
+
+            <p>For monoalphabetic substitution, frequency analysis is your friend. The most common letters in English are ETAOIN SHRDLU:</p>
+
+            <pre><code>from collections import Counter
+
+def frequency_analysis(ciphertext):
+    # Remove non-letters and count
+    letters = [c for c in ciphertext.upper() if c.isalpha()]
+    freq = Counter(letters)
+    
+    print("Letter frequencies:")
+    for letter, count in freq.most_common():
+        print(f"{letter}: {'█' * (count * 50 // freq.most_common(1)[0][1])}")</code></pre>
+
+            <h2>RSA Vulnerabilities in CTFs</h2>
+
+            <p>RSA is the most common public-key cryptosystem in CTFs. While mathematically secure when implemented correctly, CTF challenges often introduce weaknesses.</p>
+
+            <h3>Small Public Exponent Attack</h3>
+
+            <div class="challenge-box">
+                <h4>Challenge Example:</h4>
+                <p>You're given <code>n</code>, <code>e = 3</code>, and ciphertext <code>c</code>. If the message <code>m</code> is small enough that <code>m³ < n</code>, you can simply take the cube root:</p>
+                
+                <pre><code>import gmpy2
+
+def small_e_attack(c, e, n):
+    # If m^e < n, then c = m^e (no modular reduction occurred)
+    # We can just take the e-th root
+    m, exact = gmpy2.iroot(c, e)
+    if exact:
+        return int(m)
+    
+    # If not exact, try adding multiples of n
+    for k in range(1, 1000):
+        m, exact = gmpy2.iroot(c + k * n, e)
+        if exact:
+            return int(m)
+    
+    return None
+
+# Example
+n = 0x9c98... # large number
+e = 3
+c = 0x1234... # ciphertext
+
+message = small_e_attack(c, e, n)
+print(bytes.fromhex(hex(message)[2:]))</code></pre>
+            </div>
+
+            <h3>Common Modulus Attack</h3>
+
+            <p>If the same message is encrypted with the same modulus <code>n</code> but different exponents <code>e₁</code> and <code>e₂</code>, you can recover the plaintext:</p>
+
+            <pre><code>def extended_gcd(a, b):
+    if a == 0:
+        return b, 0, 1
+    gcd, x1, y1 = extended_gcd(b % a, a)
+    x = y1 - (b // a) * x1
+    y = x1
+    return gcd, x, y
+
+def common_modulus_attack(c1, c2, e1, e2, n):
+    # Ensure gcd(e1, e2) = 1
+    gcd, s1, s2 = extended_gcd(e1, e2)
+    
+    if gcd != 1:
+        return None
+    
+    # m = c1^s1 * c2^s2 mod n
+    if s1 < 0:
+        c1 = pow(c1, -1, n)
+        s1 = -s1
+    if s2 < 0:
+        c2 = pow(c2, -1, n)
+        s2 = -s2
+    
+    m = (pow(c1, s1, n) * pow(c2, s2, n)) % n
+    return m</code></pre>
+
+            <h3>Wiener's Attack</h3>
+
+            <p>When the private exponent <code>d</code> is small (specifically, <code>d < (1/3) * n^(1/4)</code>), Wiener's attack can recover it using continued fractions:</p>
+
+            <pre><code>from fractions import Fraction
+
+def convergents(e, n):
+    """Generate continued fraction convergents of e/n"""
+    cf = []
+    while n:
+        cf.append(e // n)
+        e, n = n, e % n
+    
+    convergents = []
+    for i in range(len(cf)):
+        num, den = 0, 1
+        for j in range(i, -1, -1):
+            num, den = den, cf[j] * den + num
+        convergents.append((den, num))
+    
+    return convergents
+
+def wiener_attack(e, n):
+    """Wiener's attack on RSA with small d"""
+    for k, d in convergents(e, n):
+        if k == 0:
+            continue
+        
+        phi = (e * d - 1) // k
+        
+        # Solve x^2 - ((n - phi + 1))x + n = 0
+        b = n - phi + 1
+        discriminant = b * b - 4 * n
+        
+        if discriminant >= 0:
+            sqrt_d = int(discriminant ** 0.5)
+            if sqrt_d * sqrt_d == discriminant:
+                p = (b + sqrt_d) // 2
+                q = (b - sqrt_d) // 2
+                if p * q == n:
+                    return d
+    
+    return None</code></pre>
+
+            <h2>Breaking Weak Random Number Generators</h2>
+
+            <p>Many CTF challenges use weak or predictable RNGs for key generation. Understanding common RNG vulnerabilities is crucial.</p>
+
+            <h3>Linear Congruential Generator (LCG)</h3>
+
+            <pre><code>def crack_lcg(outputs):
+    """Crack LCG parameters from consecutive outputs"""
+    # LCG: X(n+1) = (a * X(n) + c) mod m
+    
+    # If we have outputs y0, y1, y2, y3:
+    y0, y1, y2, y3 = outputs[:4]
+    
+    # We can solve for a and c if we know m
+    # (y2 - y1) = a(y1 - y0) mod m
+    # (y3 - y2) = a(y2 - y1) mod m
+    
+    diff1 = y1 - y0
+    diff2 = y2 - y1
+    diff3 = y3 - y2
+    
+    # a = (y3 - y2) / (y2 - y1) mod m
+    # This requires knowing m or guessing common values like 2^32
+    
+    for m in [2**32, 2**64]:
+        try:
+            a = (diff3 * pow(diff2, -1, m)) % m
+            c = (y1 - a * y0) % m
+            
+            # Verify
+            if all((a * outputs[i] + c) % m == outputs[i+1] for i in range(len(outputs)-1)):
+                return a, c, m
+        except:
+            continue
+    
+    return None
+
+# Predict future values
+def predict_next(state, a, c, m):
+    return (a * state + c) % m</code></pre>
+
+            <h2>Block Cipher Attacks</h2>
+
+            <h3>ECB Mode Oracle</h3>
+
+            <p>ECB mode encrypts each block independently, making it vulnerable to block-swapping attacks and chosen-plaintext attacks:</p>
+
+            <div class="challenge-box">
+                <h4>Byte-at-a-Time ECB Decryption:</h4>
+                <pre><code>def ecb_oracle_attack(oracle, block_size=16):
+    """
+    Decrypt unknown suffix using ECB oracle
+    oracle: function that takes plaintext and returns ciphertext
+    """
+    # Determine block size (already known to be 16 in this example)
+    
+    # Discover unknown text byte by byte
+    unknown = b""
+    
+    while True:
+        # Craft input that puts unknown byte at end of block
+        padding_length = (block_size - 1 - len(unknown)) % block_size
+        padding = b"A" * padding_length
+        
+        # Get target block
+        target = oracle(padding)
+        target_block = target[len(unknown) // block_size * block_size:
+                              (len(unknown) // block_size + 1) * block_size]
+        
+        # Try all possible bytes
+        found = False
+        for byte in range(256):
+            test = padding + unknown + bytes([byte])
+            result = oracle(test)
+            
+            if result[:len(test)] == target[:len(test)]:
+                unknown += bytes([byte])
+                found = True
+                break
+        
+        if not found:
+            break
+    
+    return unknown</code></pre>
+            </div>
+
+            <h3>Padding Oracle Attack</h3>
+
+            <p>Padding oracle attacks exploit improper error handling in CBC mode implementations:</p>
+
+            <pre><code>def padding_oracle_attack(ciphertext, oracle, block_size=16):
+    """
+    Decrypt ciphertext using padding oracle
+    oracle: returns True if padding is valid, False otherwise
+    """
+    plaintext = b""
+    blocks = [ciphertext[i:i+block_size] for i in range(0, len(ciphertext), block_size)]
+    
+    for i in range(len(blocks) - 1, 0, -1):
+        c1 = blocks[i-1]
+        c2 = blocks[i]
+        
+        intermediate = bytearray(block_size)
+        
+        # Decrypt block byte by byte from right to left
+        for byte_pos in range(block_size - 1, -1, -1):
+            # Padding value we're targeting
+            padding_value = block_size - byte_pos
+            
+            # Create probe
+            probe = bytearray(block_size)
+            for j in range(byte_pos + 1, block_size):
+                probe[j] = intermediate[j] ^ padding_value
+            
+            # Try all possible bytes
+            for guess in range(256):
+                probe[byte_pos] = guess
+                
+                if oracle(bytes(probe) + c2):
+                    intermediate[byte_pos] = guess ^ padding_value
+                    break
+        
+        # XOR with previous ciphertext block to get plaintext
+        plaintext = bytes(a ^ b for a, b in zip(c1, intermediate)) + plaintext
+    
+    return plaintext</code></pre>
+
+            <h2>Hash Function Weaknesses</h2>
+
+            <h3>Length Extension Attacks</h3>
+
+            <p>Algorithms like MD5, SHA-1, and SHA-256 are vulnerable to length extension attacks when used for authentication without HMAC:</p>
+
+            <pre><code>import hashlib
+import struct
+
+def sha256_length_extension(original_hash, original_length, append_data):
+    """
+    Perform length extension attack on SHA-256
+    Requires: hashpumpy library or manual implementation
+    """
+    # This is a simplified example
+    # In practice, use hashpumpy library
+    
+    # Calculate padding for original message
+    ml = original_length * 8  # message length in bits
+    padding = b'\x80'
+    padding += b'\x00' * ((55 - original_length) % 64)
+    padding += struct.pack('>Q', ml)
+    
+    # New hash will be hash(original || padding || append_data)
+    # The new hash can be computed without knowing the original message
+    
+    print("Use hashpumpy library for actual implementation")
+    print("pip install hashpumpy")
+    
+    # Example usage:
+    # import hashpumpy
+    # new_hash, new_msg = hashpumpy.hashpump(original_hash, '', append_data, original_length)</code></pre>
+
+            <h2>Practical CTF Crypto Toolkit</h2>
+
+            <div class="highlight">
+                <h3>Essential Tools:</h3>
+                <ul>
+                    <li><strong>RsaCtfTool</strong>: Automated RSA attack tool</li>
+                    <li><strong>hash-identifier</strong>: Identify hash types</li>
+                    <li><strong>hashcat/john</strong>: Password cracking</li>
+                    <li><strong>CyberChef</strong>: Swiss army knife for encoding/encryption</li>
+                    <li><strong>SageMath</strong>: Mathematical computations</li>
+                    <li><strong>pycryptodome</strong>: Python crypto library</li>
+                </ul>
+            </div>
+
+            <h2>Tips for Solving CTF Crypto Challenges</h2>
+
+            <ol>
+                <li><strong>Read carefully</strong>: Challenge descriptions often contain hints about the vulnerability</li>
+                <li><strong>Check for small values</strong>: Small exponents, small primes, or small messages are red flags</li>
+                <li><strong>Look for repeated patterns</strong>: ECB mode, reused keys, or similar ciphertexts</li>
+                <li><strong>Consider the basics</strong>: Sometimes it's just base64 or XOR</li>
+                <li><strong>Use existing tools</strong>: Don't reinvent the wheel for well-known attacks</li>
+                <li><strong>Work backwards</strong>: Start with what you want (the flag format) and work backwards</li>
+                <li><strong>Try brute force</strong>: If the keyspace is small, just brute force it</li>
+            </ol>
+
+            <h2>Conclusion</h2>
+
+            <p>CTF cryptography challenges teach you to think like both a cryptographer and an attacker. While modern cryptographic algorithms are secure when properly implemented, real-world systems often have subtle flaws that can be exploited.</p>
+
+            <p>The key to mastering CTF crypto is practice. Start with beginner challenges on platforms like PicoCTF or CryptoHack, gradually working your way up to more advanced challenges. Each solved challenge will add new tools and techniques to your arsenal.</p>
+
+            <p>Remember: in CTF crypto, if something seems too secure, you're probably missing a weakness that was intentionally introduced. Keep looking, and happy hacking!</p>
+
+            <a href="index.html" class="back-link">← Back to Blog</a>
+        </article>
+    </div>
+
+    <footer>
+        <p>© 2026 Francis Kuria • Sharing security knowledge, one post at a time</p>
+    </footer>
+</body>
+</html>
