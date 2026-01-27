@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GraphQL Security: Testing and Hardening Your APIs — Francis Kuria</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #e0e0e0; background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 100%); min-height: 100vh; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        header { background: rgba(26, 26, 46, 0.8); backdrop-filter: blur(10px); padding: 20px 0; margin-bottom: 40px; border-bottom: 2px solid #3a86ff; }
+        nav { display: flex; justify-content: space-between; align-items: center; max-width: 900px; margin: 0 auto; padding: 0 20px; }
+        .logo { font-size: 24px; font-weight: bold; color: #3a86ff; text-decoration: none; }
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav a { color: #e0e0e0; text-decoration: none; transition: color 0.3s; }
+        nav a:hover { color: #3a86ff; }
+        .article-meta { color: #888; font-size: 14px; margin-bottom: 20px; display: flex; gap: 20px; flex-wrap: wrap; }
+        .tag { background: rgba(58, 134, 255, 0.2); padding: 5px 15px; border-radius: 20px; color: #3a86ff; font-size: 12px; text-transform: uppercase; }
+        h1 { font-size: 42px; color: #ffffff; margin-bottom: 20px; line-height: 1.2; }
+        h2 { font-size: 32px; color: #ffffff; margin: 40px 0 20px; padding-bottom: 10px; border-bottom: 2px solid #3a86ff; }
+        h3 { font-size: 24px; color: #3a86ff; margin: 30px 0 15px; }
+        p { margin-bottom: 20px; font-size: 17px; color: #d0d0d0; }
+        code { background: rgba(58, 134, 255, 0.1); padding: 2px 8px; border-radius: 4px; font-family: 'Courier New', monospace; color: #3a86ff; }
+        pre { background: #0d1117; padding: 20px; border-radius: 8px; overflow-x: auto; margin: 20px 0; border-left: 4px solid #3a86ff; }
+        pre code { background: none; padding: 0; color: #e0e0e0; font-size: 14px; display: block; line-height: 1.5; }
+        ul, ol { margin: 20px 0 20px 40px; color: #d0d0d0; }
+        li { margin-bottom: 10px; font-size: 17px; }
+        .highlight { background: rgba(58, 134, 255, 0.1); border-left: 4px solid #3a86ff; padding: 20px; margin: 20px 0; border-radius: 4px; }
+        .warning { background: rgba(255, 87, 87, 0.1); border-left: 4px solid #ff5757; padding: 20px; margin: 20px 0; border-radius: 4px; }
+        .back-link { display: inline-block; color: #3a86ff; text-decoration: none; margin-top: 40px; padding: 10px 20px; border: 2px solid #3a86ff; border-radius: 5px; transition: all 0.3s; }
+        .back-link:hover { background: #3a86ff; color: #ffffff; }
+        footer { text-align: center; padding: 40px 20px; color: #888; margin-top: 60px; border-top: 1px solid rgba(58, 134, 255, 0.2); }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="../index.html" class="logo">🛡️ Francis Kuria</a>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../index.html#work">Projects</a></li>
+                <li><a href="index.html">Blog</a></li>
+                <li><a href="../index.html#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <article>
+            <div class="article-header">
+                <div class="article-meta">
+                    <span class="tag">📡 GraphQL</span>
+                    <span class="tag">API Security</span>
+                    <span>📅 Nov 28, 2025</span>
+                    <span>⏱️ 7 min read</span>
+                </div>
+                <h1>GraphQL Security: Testing and Hardening Your APIs</h1>
+            </div>
+
+            <p>GraphQL has rapidly become the API query language of choice for modern applications. Its flexibility and efficiency are impressive, but they also introduce unique security challenges that traditional REST API defenses don't address. Having tested dozens of GraphQL implementations, I've seen the same vulnerabilities appear repeatedly. Let's explore how to identify and fix them.</p>
+
+            <h2>GraphQL Fundamentals</h2>
+
+            <p>Before diving into security, let's understand what makes GraphQL different:</p>
+
+            <pre><code># GraphQL Query
+query {
+  user(id: "123") {
+    name
+    email
+    posts {
+      title
+      content
+      comments {
+        author
+        text
+      }
+    }
+  }
+}</code></pre>
+
+            <p>Unlike REST, where you might need multiple endpoints, GraphQL allows clients to request exactly the data they need in a single query. This power comes with security trade-offs.</p>
+
+            <h2>Critical GraphQL Vulnerabilities</h2>
+
+            <h3>1. Introspection Exposure</h3>
+
+            <p>GraphQL's introspection feature allows clients to discover the entire API schema. While useful for development, it's dangerous in production:</p>
+
+            <pre><code># Introspection query reveals everything
+query IntrospectionQuery {
+  __schema {
+    queryType { name }
+    mutationType { name }
+    types {
+      name
+      kind
+      fields {
+        name
+        type {
+          name
+          kind
+        }
+      }
+    }
+  }
+}</code></pre>
+
+            <div class="warning">
+                <h4>What Attackers Learn:</h4>
+                <ul>
+                    <li>All available queries and mutations</li>
+                    <li>Field names and types</li>
+                    <li>Relationships between objects</li>
+                    <li>Hidden admin or debug endpoints</li>
+                    <li>Deprecated but still functional fields</li>
+                </ul>
+            </div>
+
+            <h4>Testing for Introspection:</h4>
+
+            <pre><code># Quick test
+curl -X POST http://target.com/graphql \
+  -H "Content-Type: application/json" \
+  -d '{"query": "{ __schema { types { name } } }"}'
+
+# If successful, you'll see the entire schema
+
+# Automated tool
+python3 graphqlmap.py -u http://target.com/graphql --dump</code></pre>
+
+            <h4>Mitigation:</h4>
+
+            <pre><code>// Node.js with Apollo Server
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  introspection: process.env.NODE_ENV !== 'production',
+  playground: process.env.NODE_ENV !== 'production'
+});
+
+// Python with Graphene
+schema = graphene.Schema(
+    query=Query,
+    mutation=Mutation,
+    auto_camelcase=False
+)
+# Disable in production via middleware</code></pre>
+
+            <h3>2. Nested Query DoS</h3>
+
+            <p>GraphQL's ability to nest queries deeply can be weaponized for denial of service:</p>
+
+            <pre><code>query MaliciousQuery {
+  users {
+    posts {
+      comments {
+        author {
+          posts {
+            comments {
+              author {
+                posts {
+                  comments {
+                    # ... continues 50+ levels deep
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+# This single query can execute thousands of database queries</code></pre>
+
+            <h4>Mitigation - Query Depth Limiting:</h4>
+
+            <pre><code>// Apollo Server
+const { createComplexityLimitRule } = require('graphql-validation-complexity');
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  validationRules: [
+    createComplexityLimitRule(1000, {
+      onCost: (cost) => console.log('Query cost:', cost)
+    })
+  ]
+});
+
+// Manual depth limiting
+const depthLimit = require('graphql-depth-limit');
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  validationRules: [depthLimit(5)]  // Max 5 levels deep
+});</code></pre>
+
+            <h3>3. Batch Query Attacks</h3>
+
+            <p>GraphQL allows multiple queries in a single request. Attackers can abuse this for brute-forcing or DoS:</p>
+
+            <pre><code>[
+  {"query": "mutation { login(user:\"admin\", pass:\"pass1\") }"},
+  {"query": "mutation { login(user:\"admin\", pass:\"pass2\") }"},
+  {"query": "mutation { login(user:\"admin\", pass:\"pass3\") }"},
+  // ... 10,000 login attempts in one HTTP request
+]</code></pre>
+
+            <h4>Mitigation:</h4>
+
+            <pre><code>// Limit batch operations
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  plugins: [{
+    requestDidStart() {
+      return {
+        didResolveOperation({ request }) {
+          // Limit to 5 operations per request
+          if (request.operationName && 
+              Array.isArray(request.query) && 
+              request.query.length > 5) {
+            throw new Error('Batch limit exceeded');
+          }
+        }
+      }
+    }
+  }]
+});</code></pre>
+
+            <h3>4. Authorization Bypass</h3>
+
+            <p>GraphQL's flexible querying can expose unauthorized data through field-level access issues:</p>
+
+            <pre><code># Intended query (authorized)
+query {
+  me {
+    name
+    email
+  }
+}
+
+# Bypass attempt
+query {
+  me {
+    name
+    email
+    admin  # Should be restricted
+    salary  # Sensitive field
+    ssn  # PII
+  }
+}
+
+# Or through relationships
+query {
+  me {
+    name
+    department {
+      employees {  # Access to all employees
+        name
+        salary
+      }
+    }
+  }
+}</code></pre>
+
+            <h4>Secure Implementation:</h4>
+
+            <pre><code>// Field-level authorization
+const resolvers = {
+  User: {
+    email: (parent, args, context) => {
+      // Only return email for the authenticated user
+      if (context.user.id !== parent.id && !context.user.isAdmin) {
+        throw new AuthorizationError('Not authorized');
+      }
+      return parent.email;
+    },
+    
+    salary: (parent, args, context) => {
+      // Strict access control
+      if (!context.user.isAdmin && !context.user.isHR) {
+        return null;  // Or throw error
+      }
+      return parent.salary;
+    }
+  }
+};
+
+// Using graphql-shield for declarative permissions
+const { shield, rule, and, or } = require('graphql-shield');
+
+const isAuthenticated = rule()(
+  async (parent, args, ctx) => ctx.user !== null
+);
+
+const isAdmin = rule()(
+  async (parent, args, ctx) => ctx.user.role === 'admin'
+);
+
+const permissions = shield({
+  Query: {
+    users: isAdmin,
+    user: isAuthenticated
+  },
+  User: {
+    email: isAuthenticated,
+    salary: or(isAdmin, isHR)
+  }
+});</code></pre>
+
+            <h3>5. Injection Vulnerabilities</h3>
+
+            <p>GraphQL doesn't prevent injection attacks—it just changes where they occur:</p>
+
+            <pre><code># SQL Injection through GraphQL
+query {
+  user(id: "1' OR '1'='1") {
+    name
+    email
+  }
+}
+
+# NoSQL Injection
+query {
+  users(filter: "{\"$where\": \"this.password.length > 0\"}") {
+    name
+  }
+}
+
+# Command Injection in file operations
+mutation {
+  uploadFile(filename: "../../etc/passwd") {
+    path
+  }
+}</code></pre>
+
+            <h4>Mitigation:</h4>
+
+            <pre><code>// Input validation and sanitization
+const resolvers = {
+  Query: {
+    user: async (parent, { id }, context) => {
+      // Validate input
+      if (!Number.isInteger(parseInt(id))) {
+        throw new UserInputError('Invalid ID format');
+      }
+      
+      // Use parameterized queries
+      return context.db.query(
+        'SELECT * FROM users WHERE id = $1',
+        [id]
+      );
+    }
+  },
+  
+  Mutation: {
+    createPost: async (parent, { title, content }, context) => {
+      // Sanitize HTML content
+      const sanitized = DOMPurify.sanitize(content);
+      
+      // Validate title length
+      if (title.length > 200) {
+        throw new UserInputError('Title too long');
+      }
+      
+      return context.db.createPost({
+        title,
+        content: sanitized,
+        authorId: context.user.id
+      });
+    }
+  }
+};</code></pre>
+
+            <h2>Advanced Testing Techniques</h2>
+
+            <h3>Automated Scanning with GraphQLmap</h3>
+
+            <pre><code># Install
+git clone https://github.com/swisskyrepo/GraphQLmap
+cd GraphQLmap
+python3 graphqlmap.py
+
+# Basic enumeration
+python3 graphqlmap.py -u http://target.com/graphql --dump
+
+# Test for common vulnerabilities
+python3 graphqlmap.py -u http://target.com/graphql --detect
+
+# Fuzzing
+python3 graphqlmap.py -u http://target.com/graphql \
+  --method POST \
+  --fuzz</code></pre>
+
+            <h3>Manual Testing Checklist</h3>
+
+            <div class="highlight">
+                <ol>
+                    <li><strong>Introspection</strong>: Check if schema is exposed</li>
+                    <li><strong>Depth Limits</strong>: Send deeply nested queries</li>
+                    <li><strong>Batch Limits</strong>: Send arrays of queries</li>
+                    <li><strong>Rate Limiting</strong>: Test mutation spam</li>
+                    <li><strong>Authorization</strong>: Access fields/queries without proper roles</li>
+                    <li><strong>Injection</strong>: Test all input fields for SQLi, XSS, etc.</li>
+                    <li><strong>Error Messages</strong>: Check for verbose errors revealing internals</li>
+                    <li><strong>CSRF</strong>: Test if mutations require CSRF tokens</li>
+                    <li><strong>Field Suggestions</strong>: Typo field names to discover hidden fields</li>
+                </ol>
+            </div>
+
+            <h3>Burp Suite GraphQL Testing</h3>
+
+            <pre><code>1. Install "InQL" extension from BApp Store
+
+2. Send any GraphQL request to InQL
+
+3. InQL will:
+   - Extract the schema via introspection
+   - Generate all possible queries
+   - Create a sitemap of available operations
+
+4. Use generated queries in Repeater/Intruder
+
+5. Test each field for authorization bypasses</code></pre>
+
+            <h2>Security Best Practices</h2>
+
+            <h3>1. Implement Multiple Layers of Defense</h3>
+
+            <pre><code>const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  
+  // Disable introspection in production
+  introspection: false,
+  playground: false,
+  
+  // Limit query complexity
+  validationRules: [
+    depthLimit(5),
+    createComplexityLimitRule(1000)
+  ],
+  
+  // Add security headers
+  context: ({ req, res }) => {
+    res.set({
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'DENY',
+      'Content-Security-Policy': "default-src 'self'"
+    });
+    
+    return { req, res };
+  },
+  
+  // Error handling
+  formatError: (err) => {
+    // Don't leak internal errors
+    if (err.message.includes('database')) {
+      return new Error('Internal server error');
+    }
+    return err;
+  }
+});</code></pre>
+
+            <h3>2. Rate Limiting</h3>
+
+            <pre><code>const rateLimit = require('express-rate-limit');
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  
+  // Different limits for mutations
+  handler: (req, res) => {
+    if (req.body.query.includes('mutation')) {
+      // Stricter limit for mutations
+      if (req.rateLimit.current > 20) {
+        res.status(429).json({
+          error: 'Too many mutations'
+        });
+      }
+    }
+  }
+});
+
+app.use('/graphql', limiter);</code></pre>
+
+            <h3>3. Query Cost Analysis</h3>
+
+            <pre><code>const { getComplexity, simpleEstimator } = require('graphql-query-complexity');
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  plugins: [{
+    requestDidStart: () => ({
+      didResolveOperation({ request, document }) {
+        const complexity = getComplexity({
+          schema,
+          query: document,
+          variables: request.variables,
+          estimators: [
+            simpleEstimator({ defaultComplexity: 1 })
+          ]
+        });
+        
+        if (complexity > 1000) {
+          throw new Error(`Query too complex: ${complexity}`);
+        }
+      }
+    })
+  }]
+});</code></pre>
+
+            <h3>4. Persistent Query Whitelist</h3>
+
+            <pre><code>// Only allow pre-approved queries
+const approvedQueries = {
+  'getUser': 'query GetUser($id: ID!) { user(id: $id) { name email } }',
+  'listPosts': 'query ListPosts { posts { title author } }'
+};
+
+app.post('/graphql', (req, res) => {
+  const { queryId, variables } = req.body;
+  
+  if (!approvedQueries[queryId]) {
+    return res.status(400).json({
+      error: 'Query not whitelisted'
+    });
+  }
+  
+  // Execute approved query
+  executeQuery(approvedQueries[queryId], variables);
+});</code></pre>
+
+            <h2>Monitoring and Detection</h2>
+
+            <pre><code>// Log suspicious activity
+const server = new ApolloServer({
+  plugins: [{
+    requestDidStart() {
+      return {
+        didEncounterErrors({ errors, operation }) {
+          errors.forEach(error => {
+            // Alert on authorization failures
+            if (error.extensions?.code === 'UNAUTHENTICATED') {
+              logger.warn('Unauthorized access attempt', {
+                operation: operation.operationName,
+                error: error.message
+              });
+            }
+          });
+        },
+        
+        willSendResponse({ response, queryHash }) {
+          // Monitor query patterns
+          if (response.data) {
+            analytics.track('graphql_query', {
+              hash: queryHash,
+              fieldCount: countFields(response.data)
+            });
+          }
+        }
+      };
+    }
+  }]
+});</code></pre>
+
+            <h2>Conclusion</h2>
+
+            <p>GraphQL's flexibility is both its greatest strength and potential weakness. Securing GraphQL requires moving beyond traditional REST API security thinking. You need to consider query complexity, field-level authorization, and the unique attack vectors that GraphQL's design enables.</p>
+
+            <p>The key takeaways:</p>
+
+            <ul>
+                <li>Disable introspection in production</li>
+                <li>Implement query depth and complexity limits</li>
+                <li>Enforce field-level authorization</li>
+                <li>Rate limit all operations, especially mutations</li>
+                <li>Validate and sanitize all inputs</li>
+                <li>Monitor for suspicious query patterns</li>
+            </ul>
+
+            <p>GraphQL security is an ongoing process. Regularly audit your schema, test your authorization logic, and stay updated on new attack techniques. Your API's security depends on defense in depth—no single protection is sufficient.</p>
+
+            <a href="index.html" class="back-link">← Back to Blog</a>
+        </article>
+    </div>
+
+    <footer>
+        <p>© 2026 Francis Kuria • Sharing security knowledge, one post at a time</p>
+    </footer>
+</body>
+</html>
