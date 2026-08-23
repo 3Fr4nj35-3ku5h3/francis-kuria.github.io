@@ -2,625 +2,835 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Francis Kuria — Cybersecurity Analyst & Technical Writer</title>
-  <meta name="description" content="Francis Kuria — Cybersecurity analyst specializing in threat detection and technical documentation. Seeking junior security analyst roles." />
-
-  <!-- Open Graph / Twitter -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Francis Kuria | Cybersecurity Analyst & Data Scientist</title>
+  <meta name="description" content="Francis Ngumi Kuria — Certified Junior Data Scientist and Cybersecurity Analyst. Secure systems. Intelligent data solutions. Nairobi, Kenya." />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Francis Kuria — Cybersecurity Analyst & Technical Writer" />
-  <meta property="og:description" content="Cybersecurity analyst specializing in threat detection and technical documentation." />
-  <meta property="og:url" content="https://3Fr4nj35-3ku5h3.github.io/francis-kuria.github.io/" />
-  <meta property="og:image" content="https://3Fr4nj35-3ku5h3.github.io/francis-kuria.github.io/assets/og-image.png" />
+  <meta property="og:title" content="Francis Kuria | Cybersecurity & Data Science" />
+  <meta property="og:description" content="Certified Junior Data Scientist · Cybersecurity Analyst. Building secure systems and intelligent insights from Nairobi." />
+  <meta property="og:url" content="https://3fr4nj35-3ku5h3.github.io/francis-kuria.github.io/" />
   <meta name="twitter:card" content="summary_large_image" />
-
-  <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>" />
-
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
-    /* Global design tokens */
-    :root{
-      --bg-start: #020617;
-      --bg-end: #0f172a;
-      --card: rgba(17,24,39,0.95);
-      --text: #e5e7eb;
-      --muted: #9ca3af;
-      --accent: #22c55e;
-      --accent-hover: #16a34a;
-      --focus: #0a66c2;
-      --radius: 12px;
-      --container: 1100px;
-      --border: rgba(255,255,255,0.06);
+    :root {
+      --bg: #05070b;
+      --bg-elevated: #0c1017;
+      --bg-card: #11161f;
+      --border: #1e2633;
+      --border-glow: #2a3548;
+      --text: #e8edf5;
+      --muted: #8b97ab;
+      --cyan: #22d3ee;
+      --emerald: #34d399;
+      --violet: #a78bfa;
+      --rose: #fb7185;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Inter", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::selection { background: rgba(34, 211, 238, 0.3); color: #fff; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 1.25rem; }
+    .section { padding: 5.5rem 0; }
+    @media (min-width: 768px) { .section { padding: 7rem 0; } }
+
+    .text-gradient {
+      background: linear-gradient(135deg, #22d3ee, #34d399 50%, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .text-cyan { color: var(--cyan); }
+    .text-emerald { color: var(--emerald); }
+    .text-muted { color: var(--muted); }
+
+    /* Grid bg */
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(34, 211, 238, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 211, 238, 0.03) 1px, transparent 1px);
+      background-size: 56px 56px;
     }
 
-    /* Reset and base */
-    *{box-sizing:border-box;margin:0;padding:0;}
-    html{scroll-behavior:smooth}
-    body{
-      font-family: "Times New Roman", Times, serif;
-      background: linear-gradient(180deg,var(--bg-start),var(--bg-end));
-      color:var(--text);
-      line-height:1.6;
-      font-size:16px;
-      -webkit-font-smoothing:antialiased;
-      min-height:100vh;
+    /* NAV */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      transition: background 0.3s, border-color 0.3s, backdrop-filter 0.3s;
+      border-bottom: 1px solid transparent;
+    }
+    .nav.scrolled {
+      background: rgba(5, 7, 11, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom-color: var(--border);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px; max-width: 1100px; margin: 0 auto; padding: 0 1.25rem;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-weight: 600; font-size: 0.95rem;
+    }
+    .brand svg { width: 22px; height: 22px; color: var(--cyan); }
+    .nav-links { display: none; gap: 1.75rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.875rem; color: var(--muted);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: #fff; }
+    .nav-cta {
+      display: none;
+      padding: 0.45rem 1rem; border-radius: 999px;
+      font-size: 0.8rem; font-weight: 500;
+      background: rgba(34, 211, 238, 0.1);
+      color: #67e8f9;
+      border: 1px solid rgba(34, 211, 238, 0.3);
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: rgba(34, 211, 238, 0.2); }
+    .menu-btn {
+      display: flex; background: none; border: none; color: var(--muted);
+      cursor: pointer; padding: 0.35rem;
+    }
+    .menu-btn:hover { color: #fff; }
+    .mobile-menu {
+      display: none;
+      background: rgba(12, 16, 23, 0.98);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 1.25rem 1.25rem;
+    }
+    .mobile-menu.open { display: block; }
+    .mobile-menu a {
+      display: block; padding: 0.65rem 0; color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .mobile-menu a:hover { color: #fff; }
+    @media (min-width: 768px) {
+      .nav-links, .nav-cta { display: flex; }
+      .menu-btn { display: none; }
     }
 
-    .skip-link{ 
-      position:absolute; 
-      left:16px; 
-      top:-48px; 
-      background:#fff; 
-      color:#000; 
-      padding:8px 12px; 
-      z-index:100; 
-      border-radius:6px; 
-      transition:top .12s ease;
-      font-weight:700;
+    /* HERO */
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding-top: 5rem; padding-bottom: 4rem;
+      overflow: hidden;
     }
-    .skip-link:focus{ top:16px; }
+    .hero-orb {
+      position: absolute; border-radius: 50%; filter: blur(100px);
+      pointer-events: none;
+    }
+    .orb-1 { top: 15%; left: -8%; width: 380px; height: 380px; background: rgba(34, 211, 238, 0.12); }
+    .orb-2 { bottom: 10%; right: -8%; width: 380px; height: 380px; background: rgba(167, 139, 250, 0.1); }
+    .orb-3 { top: 40%; left: 40%; width: 500px; height: 500px; background: rgba(52, 211, 153, 0.06); transform: translate(-50%, -50%); }
+    .hero-content { position: relative; z-index: 2; text-align: center; max-width: 820px; margin: 0 auto; padding: 0 1.25rem; }
+    .badge-live {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.35rem 0.85rem; border-radius: 999px;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      font-size: 0.75rem; color: var(--muted); margin-bottom: 1.75rem;
+    }
+    .pulse {
+      position: relative; width: 8px; height: 8px;
+    }
+    .pulse::before {
+      content: ""; position: absolute; inset: 0; border-radius: 50%;
+      background: var(--emerald); animation: ping 1.5s cubic-bezier(0,0,0.2,1) infinite;
+    }
+    .pulse::after {
+      content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--emerald);
+    }
+    @keyframes ping {
+      75%, 100% { transform: scale(2.2); opacity: 0; }
+    }
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 4.25rem);
+      font-weight: 800; letter-spacing: -0.03em; line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .hero-role {
+      font-size: clamp(1.05rem, 2.5vw, 1.4rem);
+      color: var(--muted); font-weight: 500; margin-bottom: 1rem;
+    }
+    .hero-desc {
+      font-size: 1rem; color: var(--muted); max-width: 540px;
+      margin: 0 auto 2rem; line-height: 1.7;
+    }
+    .hero-cta {
+      display: flex; flex-wrap: wrap; gap: 0.75rem;
+      justify-content: center; margin-bottom: 3rem;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      padding: 0.7rem 1.35rem; border-radius: 999px;
+      font-size: 0.875rem; font-weight: 600; transition: all 0.2s;
+      border: 1px solid transparent; cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--cyan); color: #05070b;
+      box-shadow: 0 0 32px -6px rgba(34, 211, 238, 0.45);
+    }
+    .btn-primary:hover { background: #67e8f9; transform: translateY(-1px); }
+    .btn-ghost {
+      background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1);
+      color: var(--text);
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.08); }
+    .btn-emerald {
+      background: rgba(52, 211, 153, 0.1); border-color: rgba(52, 211, 153, 0.3);
+      color: #6ee7b7;
+    }
+    .btn-emerald:hover { background: rgba(52, 211, 153, 0.18); }
 
-    a { color:inherit; text-decoration:none; transition:all .2s ease; }
-    .container{ max-width:var(--container); margin:0 auto; padding:1.5rem 1.25rem; }
+    .stats {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;
+      max-width: 640px; margin: 0 auto;
+    }
+    @media (min-width: 640px) { .stats { grid-template-columns: repeat(4, 1fr); } }
+    .stat {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 1rem; padding: 1.1rem 0.75rem;
+    }
+    .stat-val {
+      font-size: 1.5rem; font-weight: 800; margin-bottom: 0.2rem;
+      background: linear-gradient(135deg, #22d3ee, #34d399 50%, #a78bfa);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    @media (min-width: 640px) { .stat-val { font-size: 1.75rem; } }
+    .stat-label { font-size: 0.7rem; color: var(--muted); }
 
-    /* Header */
-    header{ padding-top:1rem; padding-bottom:1.5rem; border-bottom:1px solid var(--border); }
-    .top-bar{ display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1rem; }
-    .brand{ font-weight:700; letter-spacing:0.5px; font-size:1.1rem; }
-    
-    nav ul{ list-style:none; display:flex; gap:1.5rem; align-items:center; flex-wrap:wrap; }
-    nav a{ 
-      color:var(--muted); 
-      font-weight:600; 
-      padding:8px 12px; 
-      border-radius:8px;
-      transition:all .2s ease;
+    /* SECTION HEADERS */
+    .section-label {
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--cyan); margin-bottom: 0.75rem;
     }
-    nav a:hover, nav a:focus{ color:var(--text); background:rgba(255,255,255,0.05); outline:none; }
-    nav a.active{ color:var(--accent); }
+    .section-title {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 800; letter-spacing: -0.02em; margin-bottom: 1rem;
+    }
+    .section-desc { color: var(--muted); max-width: 540px; line-height: 1.7; }
 
-    #navToggle{ display:none; }
+    /* ABOUT */
+    .about-grid {
+      display: grid; gap: 1rem;
+      grid-template-columns: 1fr;
+      margin-top: 2.5rem;
+    }
+    @media (min-width: 640px) { .about-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { .about-grid { grid-template-columns: repeat(4, 1fr); } }
+    .pillar {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 1.1rem; padding: 1.5rem;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .pillar:hover { transform: translateY(-4px); border-color: var(--border-glow); }
+    .pillar-icon {
+      width: 42px; height: 42px; border-radius: 0.75rem;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1rem; font-size: 1.15rem;
+    }
+    .pillar h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .pillar p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
 
-    /* Hero */
-    .hero{ display:flex; gap:3rem; align-items:center; margin-top:2rem; flex-wrap:wrap; }
-    .hero-copy{ flex:1 1 400px; min-width:280px; }
-    h1{ font-size:clamp(2.2rem,5vw,3.2rem); margin:0 0 .75rem; line-height:1.1; font-weight:700; }
-    h1 span{ color:var(--accent); }
-    .subtitle{ color:var(--muted); font-size:1.1rem; max-width:65ch; margin:0 0 1.5rem; }
+    /* EXPERTISE */
+    .expertise-bg { background: rgba(12, 16, 23, 0.5); }
+    .expertise-grid {
+      display: grid; gap: 1.5rem; margin-top: 2.5rem;
+    }
+    @media (min-width: 768px) { .expertise-grid { grid-template-columns: 1fr 1fr; } }
+    .skill-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 1.25rem; padding: 1.75rem;
+      position: relative; overflow: hidden;
+    }
+    .skill-card::before {
+      content: ""; position: absolute; inset: 0; padding: 1px; border-radius: inherit;
+      background: linear-gradient(135deg, rgba(34,211,238,0.4), transparent 45%, transparent 55%, rgba(167,139,250,0.35));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      pointer-events: none;
+    }
+    .skill-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+    .skill-badge {
+      width: 40px; height: 40px; border-radius: 0.75rem;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 1rem;
+    }
+    .skill-header h3 { font-size: 1.1rem; font-weight: 600; }
+    .skill-header span { font-size: 0.7rem; color: var(--muted); display: block; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+    .tag {
+      padding: 0.35rem 0.7rem; border-radius: 999px;
+      font-size: 0.72rem; border: 1px solid;
+    }
+    .tag-cyan { background: rgba(34,211,238,0.1); color: #a5f3fc; border-color: rgba(34,211,238,0.2); }
+    .tag-emerald { background: rgba(52,211,153,0.1); color: #a7f3d0; border-color: rgba(52,211,153,0.2); }
 
-    .hero-cta{ display:flex; gap:.75rem; flex-wrap:wrap; align-items:center; }
-    .btn{
-      display:inline-flex; 
-      align-items:center; 
-      gap:.5rem; 
-      padding:11px 18px; 
-      border-radius:999px;
-      font-weight:700; 
-      cursor:pointer; 
-      border:none; 
-      text-decoration:none;
-      font-family: inherit;
-      transition:all .2s ease;
-      font-size:0.95rem;
+    /* PROJECTS */
+    .projects-list { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2.5rem; }
+    .project {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 1.35rem; padding: 1.75rem;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
     }
-    .btn-primary{ 
-      background:var(--accent); 
-      color:#052e16; 
-      box-shadow:0 4px 12px rgba(34,197,94,0.3);
+    @media (min-width: 640px) { .project { padding: 2rem 2.25rem; } }
+    .project:hover { transform: translateY(-4px); border-color: var(--border-glow); }
+    .project.featured {
+      box-shadow: 0 0 40px -10px rgba(34, 211, 238, 0.2);
+      position: relative;
     }
-    .btn-primary:hover{ 
-      background:var(--accent-hover); 
-      transform:translateY(-2px); 
-      box-shadow:0 6px 20px rgba(34,197,94,0.4);
+    .project.featured::before {
+      content: ""; position: absolute; inset: 0; padding: 1px; border-radius: inherit;
+      background: linear-gradient(135deg, rgba(34,211,238,0.45), transparent 40%, transparent 60%, rgba(167,139,250,0.35));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      pointer-events: none;
     }
-    .btn-ghost{ 
-      background:transparent; 
-      color:var(--text); 
-      border:1px solid var(--border);
+    .project-top {
+      display: flex; flex-wrap: wrap; align-items: flex-start;
+      justify-content: space-between; gap: 1rem; margin-bottom: 1rem;
     }
-    .btn-ghost:hover{
-      border-color:var(--accent);
-      color:var(--accent);
+    .project-identity { display: flex; gap: 1rem; align-items: flex-start; }
+    .project-icon {
+      width: 48px; height: 48px; border-radius: 0.9rem;
+      background: rgba(255,255,255,0.04); display: flex;
+      align-items: center; justify-content: center; flex-shrink: 0;
+      font-size: 1.35rem;
     }
-
-    /* Avatar */
-    .avatar{ 
-      width:180px; 
-      height:180px; 
-      border-radius:50%; 
-      object-fit:cover; 
-      flex:0 0 180px; 
-      box-shadow:0 12px 30px rgba(0,0,0,0.5); 
-      border:3px solid var(--accent);
+    .project-identity h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.15rem; }
+    .project-sub { font-size: 0.85rem; color: var(--muted); }
+    .project-tag {
+      display: inline-block; font-size: 0.65rem; text-transform: uppercase;
+      letter-spacing: 0.06em; padding: 0.25rem 0.6rem; border-radius: 999px;
+      border: 1px solid; margin-left: 0.4rem; vertical-align: middle;
     }
-
-    /* About Section */
-    .about-grid{
-      display:grid;
-      grid-template-columns:2fr 1fr;
-      gap:2rem;
-      margin-top:1.5rem;
+    .tag-ds { background: rgba(52,211,153,0.12); color: #6ee7b7; border-color: rgba(52,211,153,0.3); }
+    .tag-ml { background: rgba(251,113,133,0.12); color: #fda4af; border-color: rgba(251,113,133,0.3); }
+    .tag-cyber { background: rgba(34,211,238,0.12); color: #67e8f9; border-color: rgba(34,211,238,0.3); }
+    .project-links { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .plink {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      padding: 0.4rem 0.85rem; border-radius: 999px;
+      font-size: 0.75rem; font-weight: 500; border: 1px solid;
+      transition: background 0.2s;
     }
-    .about-content{
-      background:var(--card);
-      padding:1.5rem;
-      border-radius:var(--radius);
-      border-left:4px solid var(--accent);
+    .plink-live {
+      background: rgba(34,211,238,0.12); color: #67e8f9; border-color: rgba(34,211,238,0.3);
     }
-    .about-content p{
-      margin-bottom:1rem;
-      color:var(--muted);
+    .plink-live:hover { background: rgba(34,211,238,0.22); }
+    .plink-code {
+      background: rgba(255,255,255,0.04); color: var(--muted); border-color: rgba(255,255,255,0.1);
     }
-    .stats{
-      display:grid;
-      gap:1rem;
+    .plink-code:hover { color: #fff; background: rgba(255,255,255,0.08); }
+    .project-desc { color: var(--muted); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.25rem; max-width: 720px; }
+    .highlights {
+      display: grid; gap: 0.4rem; margin-bottom: 1.25rem;
+      grid-template-columns: 1fr;
     }
-    .stat-card{
-      background:var(--card);
-      padding:1.25rem;
-      border-radius:var(--radius);
-      text-align:center;
-      border:1px solid var(--border);
+    @media (min-width: 640px) { .highlights { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 900px) { .highlights { grid-template-columns: 1fr 1fr 1fr; } }
+    .highlight {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.85rem; color: #c5cdd9;
     }
-    .stat-number{
-      font-size:2rem;
-      font-weight:700;
-      color:var(--accent);
-      display:block;
+    .highlight::before {
+      content: ""; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--cyan); flex-shrink: 0;
     }
-    .stat-label{
-      color:var(--muted);
-      font-size:0.9rem;
-      margin-top:0.25rem;
-    }
-
-    /* Sections */
-    main section{ padding:3rem 0; }
-    h2{ 
-      font-size:clamp(1.75rem,3vw,2.25rem); 
-      margin:0 0 1.5rem; 
-      font-weight:700;
-      position:relative;
-      display:inline-block;
-    }
-    h2::after{
-      content:'';
-      position:absolute;
-      bottom:-8px;
-      left:0;
-      width:60px;
-      height:4px;
-      background:var(--accent);
-      border-radius:2px;
-    }
-
-    .grid{ display:grid; gap:1.5rem; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); margin-top:2rem; }
-
-    .card{ 
-      background:var(--card); 
-      border-radius:var(--radius); 
-      padding:1.5rem; 
-      box-shadow:0 4px 12px rgba(0,0,0,0.3); 
-      transition:all .3s ease;
-      border:1px solid var(--border);
-      display:flex;
-      flex-direction:column;
-    }
-    .card:hover{ 
-      transform:translateY(-8px); 
-      box-shadow:0 12px 30px rgba(0,0,0,0.5);
-      border-color:var(--accent);
-    }
-
-    .project-thumb{ 
-      width:100%; 
-      height:180px; 
-      object-fit:cover; 
-      border-radius:8px; 
-      display:block;
-      margin-bottom:1rem;
-      background:linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-    }
-    
-    h3{ font-size:1.25rem; margin-bottom:0.75rem; color:var(--text); }
-    
-    .card p{ color:var(--muted); margin-bottom:1rem; flex-grow:1; }
-    
-    .project-meta{ 
-      display:flex; 
-      gap:.5rem; 
-      align-items:center; 
-      margin-top:auto;
-      flex-wrap:wrap; 
-    }
-    .badge{ 
-      background:#0b1220; 
-      color:var(--accent); 
-      padding:.3rem .7rem; 
-      border-radius:6px; 
-      font-size:.85rem;
-      font-weight:600;
-      border:1px solid rgba(34,197,94,0.2);
-    }
-
-    /* Blog Section */
-    .blog-grid{
-      display:grid;
-      gap:1.5rem;
-      grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
-      margin-top:2rem;
-    }
-    .blog-card{
-      background:var(--card);
-      border-radius:var(--radius);
-      overflow:hidden;
-      border:1px solid var(--border);
-      transition:all .3s ease;
-      display:flex;
-      flex-direction:column;
-    }
-    .blog-card:hover{
-      transform:translateY(-6px);
-      border-color:var(--accent);
-      box-shadow:0 12px 30px rgba(0,0,0,0.5);
-    }
-    .blog-thumb{
-      width:100%;
-      height:200px;
-      object-fit:cover;
-      background:linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-    }
-    .blog-content{
-      padding:1.5rem;
-      flex-grow:1;
-      display:flex;
-      flex-direction:column;
-    }
-    .blog-meta{
-      display:flex;
-      gap:1rem;
-      margin-bottom:0.75rem;
-      font-size:0.85rem;
-      color:var(--muted);
-    }
-    .blog-title{
-      font-size:1.35rem;
-      margin-bottom:0.75rem;
-      color:var(--text);
-      font-weight:700;
-    }
-    .blog-excerpt{
-      color:var(--muted);
-      margin-bottom:1rem;
-      flex-grow:1;
-      line-height:1.6;
-    }
-    .read-more{
-      color:var(--accent);
-      font-weight:600;
-      display:inline-flex;
-      align-items:center;
-      gap:0.5rem;
-    }
-    .read-more:hover{
-      gap:0.75rem;
+    .stack { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .stack span {
+      padding: 0.25rem 0.55rem; border-radius: 0.4rem;
+      font-size: 0.7rem; background: rgba(255,255,255,0.04);
+      color: var(--muted); border: 1px solid rgba(255,255,255,0.05);
+      font-family: "JetBrains Mono", monospace;
     }
 
-    /* Contact CTA */
-    .contact-cta{
-      background:var(--card);
-      padding:2.5rem;
-      border-radius:var(--radius);
-      text-align:center;
-      border:1px solid var(--border);
-      margin-top:2rem;
+    /* CERT */
+    .cert-card {
+      max-width: 720px; margin: 2.5rem auto 0;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 1.35rem; padding: 2rem;
+      position: relative; overflow: hidden;
     }
-    .contact-cta h3{
-      font-size:1.75rem;
-      margin-bottom:1rem;
+    .cert-card::before {
+      content: ""; position: absolute; inset: 0; padding: 1px; border-radius: inherit;
+      background: linear-gradient(135deg, rgba(52,211,153,0.4), transparent 50%, rgba(34,211,238,0.25));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      pointer-events: none;
     }
-    .contact-cta p{
-      color:var(--muted);
-      margin-bottom:1.5rem;
-      max-width:600px;
-      margin-left:auto;
-      margin-right:auto;
+    .cert-inner { display: flex; flex-direction: column; gap: 1.25rem; }
+    @media (min-width: 640px) { .cert-inner { flex-direction: row; gap: 1.5rem; } }
+    .cert-icon {
+      width: 64px; height: 64px; border-radius: 1rem;
+      background: rgba(52, 211, 153, 0.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.75rem; flex-shrink: 0;
+    }
+    .cert-body h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.25rem; display: inline; }
+    .verified {
+      display: inline-block; font-size: 0.65rem; text-transform: uppercase;
+      letter-spacing: 0.05em; padding: 0.2rem 0.5rem; border-radius: 999px;
+      background: rgba(52,211,153,0.12); color: #6ee7b7;
+      border: 1px solid rgba(52,211,153,0.3); margin-left: 0.4rem; vertical-align: middle;
+    }
+    .cert-meta { font-size: 0.85rem; color: var(--muted); margin: 0.35rem 0 0.75rem; }
+    .cert-list { list-style: none; margin-bottom: 1.25rem; }
+    .cert-list li {
+      display: flex; align-items: flex-start; gap: 0.5rem;
+      font-size: 0.85rem; color: #c5cdd9; margin-bottom: 0.4rem;
+    }
+    .cert-list li::before { content: "✓"; color: var(--emerald); font-weight: 700; }
+    .mini-certs {
+      display: grid; gap: 0.75rem; margin-top: 1.5rem;
+      grid-template-columns: 1fr;
+      max-width: 720px; margin-left: auto; margin-right: auto;
+    }
+    @media (min-width: 640px) { .mini-certs { grid-template-columns: repeat(3, 1fr); } }
+    .mini-cert {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 1rem; padding: 1.15rem; text-align: center;
+    }
+    .mini-cert h4 { font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .mini-cert p { font-size: 0.7rem; color: var(--muted); }
+
+    /* CONTACT */
+    .contact { text-align: center; position: relative; }
+    .contact .section-title { margin-bottom: 0.75rem; }
+    .contact-desc { color: var(--muted); max-width: 480px; margin: 0 auto 2rem; }
+    .contact-grid {
+      display: grid; gap: 0.75rem; max-width: 560px; margin: 0 auto 2rem;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 560px) { .contact-grid { grid-template-columns: 1fr 1fr; } }
+    .contact-link {
+      display: flex; align-items: center; gap: 0.9rem;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 1rem; padding: 1.1rem 1.25rem; text-align: left;
+      transition: transform 0.25s, border-color 0.25s;
+    }
+    .contact-link:hover { transform: translateY(-3px); border-color: rgba(34,211,238,0.35); }
+    .contact-ico {
+      width: 42px; height: 42px; border-radius: 0.75rem;
+      background: rgba(34, 211, 238, 0.1); color: var(--cyan);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .contact-link strong { display: block; font-size: 0.875rem; font-weight: 600; }
+    .contact-link span { font-size: 0.75rem; color: var(--muted); }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border); padding: 2rem 0;
+      text-align: center; font-size: 0.8rem; color: var(--muted);
+    }
+    footer .container {
+      display: flex; flex-direction: column; gap: 0.5rem;
+      align-items: center;
+    }
+    @media (min-width: 640px) {
+      footer .container { flex-direction: row; justify-content: space-between; }
     }
 
-    footer{ 
-      text-align:center; 
-      padding:2.5rem 0; 
-      color:var(--muted); 
-      font-size:.9rem;
-      border-top:1px solid var(--border);
-      margin-top:3rem;
+    /* Reveal animations */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
     }
-    footer a:hover{ color:var(--accent); }
-
-    :focus-visible { 
-      outline:3px solid var(--focus); 
-      outline-offset:3px; 
-      border-radius:6px; 
-    }
-
-    /* Responsive */
-    @media (max-width:768px){ 
-      .avatar{ width:140px; height:140px; } 
-      .hero{ gap:1.5rem; } 
-      nav ul{ gap:1rem; }
-      .about-grid{ grid-template-columns:1fr; }
-      #navToggle{ display:block; }
-      nav{ 
-        position:absolute;
-        top:100%;
-        left:0;
-        right:0;
-        background:var(--bg-end);
-        border-bottom:1px solid var(--border);
-        padding:1rem;
-      }
-      nav ul{ flex-direction:column; align-items:flex-start; }
-    }
-    @media (hover: hover) and (pointer: fine){ 
-      .btn:hover{ transform:translateY(-2px); } 
-    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
-
-  <header class="container" role="banner">
-    <div class="top-bar">
-      <div class="brand">🛡️ CYBERSECURITY ANALYST</div>
-      <button id="navToggle" aria-controls="site-nav" aria-expanded="false" aria-label="Open menu" class="btn btn-ghost">☰</button>
-    </div>
-
-    <nav id="site-nav" aria-label="Primary">
-      <ul>
+  <!-- NAV -->
+  <header class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#" class="brand">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
+        </svg>
+        Francis <span class="text-cyan">Kuria</span>
+      </a>
+      <ul class="nav-links">
         <li><a href="#about">About</a></li>
-        <li><a href="#work">Projects</a></li>
-        <li><a href="#blog">Blog</a></li>
-        <li><a href="ethical-hacking-roadmap.html">Learning Path</a> <!-- NEW --> <li>
-        <li><a href="#focus">Focus</a></li>
+        <li><a href="#expertise">Expertise</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#certifications">Certs</a></li>
         <li><a href="#contact">Contact</a></li>
-        <li><a href="https://github.com/3Fr4nj35-3ku5h3" target="_blank" rel="noopener">GitHub ↗</a></li>
       </ul>
-    </nav>
-
-    <div class="hero">
-      <div class="hero-copy">
-        <h1>Hi — I AM <span>Francis Kuria</span></h1>
-        <p class="subtitle">
-          Cybersecurity analyst with hands-on experience in threat detection, vulnerability assessment, and security documentation. I transform complex security concepts into clear, actionable insights.
-        </p>
-        <div class="hero-cta">
-          <a class="btn btn-primary" href="#work">View Projects</a>
-          <a class="btn btn-ghost" href="https://3fr4nj35-3ku5h3.github.io/Beba-Salama/" target="_blank" rel="noopener">Resume</a>
-          <a class="btn btn-ghost" href="mailto:kuriaf791@gmail.com">Contact Me</a>
-        </div>
-      </div>
-
-      <picture>
-        <source srcset="assets/francis-avatar.webp" type="image/webp">
-        <img class="avatar" src="assets/francis-avatar.webp" alt="Francis Kuria headshot" width="180" height="180" loading="eager">
-      </picture>
+      <a href="#contact" class="nav-cta">Hire Me</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#about" onclick="closeMenu()">About</a>
+      <a href="#expertise" onclick="closeMenu()">Expertise</a>
+      <a href="#projects" onclick="closeMenu()">Projects</a>
+      <a href="#certifications" onclick="closeMenu()">Certs</a>
+      <a href="#contact" onclick="closeMenu()">Contact</a>
+      <a href="#contact" onclick="closeMenu()" style="margin-top:0.5rem;text-align:center;padding:0.65rem;border-radius:999px;background:rgba(34,211,238,0.12);color:#67e8f9;border:1px solid rgba(34,211,238,0.3)">Hire Me</a>
     </div>
   </header>
 
-  <main id="main" tabindex="-1">
-    <!-- About Section -->
-    <section id="about" class="container" aria-labelledby="about-heading">
-      <h2 id="about-heading">About Me</h2>
+  <!-- HERO -->
+  <section class="hero grid-bg">
+    <div class="hero-orb orb-1"></div>
+    <div class="hero-orb orb-2"></div>
+    <div class="hero-orb orb-3"></div>
+    <div class="hero-content">
+      <div class="badge-live">
+        <span class="pulse"></span>
+        Open to opportunities · Nairobi, Kenya
+      </div>
+      <h1>Francis <span class="text-gradient">Ngumi Kuria</span></h1>
+      <p class="hero-role">Cybersecurity Analyst <span style="opacity:0.4">×</span> Junior Data Scientist</p>
+      <p class="hero-desc">
+        I secure systems and extract intelligence from data. From offensive security tooling to production ML platforms that protect lives on Kenyan roads and in maternal care.
+      </p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">View Projects ↓</a>
+        <a href="https://github.com/3Fr4nj35-3ku5h3" target="_blank" rel="noopener" class="btn btn-ghost">GitHub</a>
+        <a href="https://credsverse.com/credentials/90c1b4a9-190e-48b5-8603-931373eca0a7" target="_blank" rel="noopener" class="btn btn-emerald">Data Science Cert ↗</a>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="stat-val">31k+</div><div class="stat-label">Crashes Analysed</div></div>
+        <div class="stat"><div class="stat-val">25</div><div class="stat-label">Blackspot Zones</div></div>
+        <div class="stat"><div class="stat-val">50+</div><div class="stat-label">Vuln Scans</div></div>
+        <div class="stat"><div class="stat-val">2+</div><div class="stat-label">Years Experience</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="reveal">
+        <p class="section-label">About</p>
+        <h2 class="section-title">Dual expertise. <span class="text-gradient">One mission.</span></h2>
+        <p class="section-desc">
+          Cybersecurity professional who also builds production-grade data science systems. Vulnerability scanning and CTF research on one side; large-scale crash intelligence and maternal risk screening on the other. The strongest defenders understand both attack surfaces and the data that reveals risk.
+        </p>
+      </div>
       <div class="about-grid">
-        <div class="about-content">
-          <p>I'm a cybersecurity professional passionate about building secure systems and making security knowledge accessible. My journey began with CTF competitions, where I developed a systematic approach to problem-solving and threat analysis.</p>
-          <p>Currently, I specialize in vulnerability assessment, security automation, and technical documentation. I believe the best security practices are those that can be clearly understood and readily implemented by teams of all technical levels.</p>
-          <p>When I'm not analyzing security logs or writing documentation, you'll find me contributing to open-source security tools, competing in CTF challenges, or creating educational content for aspiring security professionals.</p>
+        <div class="pillar reveal">
+          <div class="pillar-icon" style="background:rgba(34,211,238,0.12)">🛡️</div>
+          <h3>Cybersecurity</h3>
+          <p>Vulnerability assessment, security automation, network analysis, and CTF-driven offensive mindset.</p>
         </div>
-        <div class="stats">
-          <div class="stat-card">
-            <span class="stat-number">50+</span>
-            <span class="stat-label">Vulnerability Scans</span>
-          </div>
-          <div class="stat-card">
-            <span class="stat-number">15+</span>
-            <span class="stat-label">CTF Challenges</span>
-          </div>
-          <div class="stat-card">
-            <span class="stat-number">2+</span>
-            <span class="stat-label">Years Experience</span>
-          </div>
+        <div class="pillar reveal">
+          <div class="pillar-icon" style="background:rgba(52,211,153,0.12)">🧠</div>
+          <h3>Data Science & AI</h3>
+          <p>End-to-end ML pipelines, spatial clustering, LightGBM classifiers, and honest model evaluation.</p>
+        </div>
+        <div class="pillar reveal">
+          <div class="pillar-icon" style="background:rgba(167,139,250,0.12)">⚙️</div>
+          <h3>Automation</h3>
+          <p>Python tooling, Bash workflows, and security scripts that cut manual triage time by 40%+.</p>
+        </div>
+        <div class="pillar reveal">
+          <div class="pillar-icon" style="background:rgba(251,113,133,0.12)">📝</div>
+          <h3>Technical Writing</h3>
+          <p>Clear documentation, CTF writeups, and beginner-to-intermediate learning pathways.</p>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Projects Section -->
-    <section id="work" class="container" aria-labelledby="work-heading">
-      <h2 id="work-heading">Featured Projects</h2>
-      <div class="grid">
-        <article class="card" aria-labelledby="p1">
-          <img class="project-thumb" src="assets/project1-thumb.jpg" alt="Secure Audit Toolkit interface" loading="lazy" width="1200" height="675">
-          <h3 id="p1">Secure Audit Toolkit</h3>
-          <p>Automated vulnerability scanning and reporting framework that reduced manual triage time by 40% across 50+ security assessments. Built with Python and Bash for seamless integration with existing security workflows.</p>
-          <div class="project-meta">
-            <span class="badge">Python</span>
-            <span class="badge">Bash</span>
-            <span class="badge">Automation</span>
-            <a class="btn btn-ghost" href="https://github.com/3Fr4nj35-3ku5h3/securenet-toolkit" target="_blank" rel="noopener" style="margin-left:auto">View Code →</a>
-          </div>
-        </article>
-
-        <article class="card" aria-labelledby="p2">
-          <img class="project-thumb" src="assets/project2-thumb.jpg" alt="CTF writeups collection" loading="lazy" width="1200" height="675">
-          <h3 id="p2">CTF Writeups & Security Labs</h3>
-          <p>Comprehensive collection of 15+ CTF challenge solutions and reproducible security labs. Focused on practical, beginner-friendly explanations with complete environment setup instructions and learning pathways.</p>
-          <div class="project-meta">
-            <span class="badge">Documentation</span>
-            <span class="badge">Linux</span>
-            <span class="badge">Pentesting</span>
-            <a class="btn btn-ghost" href="https://github.com/3Fr4nj35-3ku5h3/ctf-writeups" target="_blank" rel="noopener" style="margin-left:auto">Explore →</a>
-          </div>
-        </article>
-
-        <article class="card" aria-labelledby="p3">
-          <img class="project-thumb" src="assets/project3-thumb.jpg" alt="Network security dashboard" loading="lazy" width="1200" height="675">
-          <h3 id="p3">Network Traffic Analyzer</h3>
-          <p>Real-time network monitoring tool for detecting anomalous traffic patterns. Implements statistical analysis and machine learning to identify potential security threats with 85% accuracy rate.</p>
-          <div class="project-meta">
-            <span class="badge">Python</span>
-            <span class="badge">Wireshark</span>
-            <span class="badge">ML</span>
-            <a class="btn btn-ghost" href="https://github.com/3Fr4nj35-3ku5h3" target="_blank" rel="noopener" style="margin-left:auto">View Code →</a>
-          </div>
-        </article>
+  <!-- EXPERTISE -->
+  <section class="section expertise-bg" id="expertise">
+    <div class="container">
+      <div class="reveal" style="text-align:center;margin-bottom:0.5rem">
+        <p class="section-label">Expertise</p>
+        <h2 class="section-title">Technical Arsenal</h2>
       </div>
-    </section>
-
-    <!-- Blog Section -->
-    <section id="blog" class="container" aria-labelledby="blog-heading">
-      <h2 id="blog-heading">Latest Blog Posts</h2>
-      <div class="blog-grid">
-        <article class="blog-card">
-          <img class="blog-thumb" src="assets/blog1.jpg" alt="Understanding SQL Injection" loading="lazy">
-          <div class="blog-content">
-            <div class="blog-meta">
-              <span>Jan 20, 2026</span>
-              <span>•</span>
-              <span>8 min read</span>
+      <div class="expertise-grid">
+        <div class="skill-card reveal">
+          <div class="skill-header">
+            <div class="skill-badge" style="background:rgba(34,211,238,0.15);color:var(--cyan)">C</div>
+            <div>
+              <h3 style="background:linear-gradient(135deg,#22d3ee,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Cybersecurity</h3>
+              <span>Offensive & defensive security</span>
             </div>
-            <h3 class="blog-title">Understanding SQL Injection: A Practical Guide</h3>
-            <p class="blog-excerpt">Deep dive into SQL injection vulnerabilities, how they work, and practical mitigation strategies. Includes hands-on examples and prevention techniques for developers.</p>
-            <a href="blog/sql-injection-guide.html" class="read-more">Read more →</a>
           </div>
-        </article>
-
-        <article class="blog-card">
-          <img class="blog-thumb" src="assets/blog2.jpg" alt="Securing API endpoints" loading="lazy">
-          <div class="blog-content">
-            <div class="blog-meta">
-              <span>Jan 15, 2026</span>
-              <span>•</span>
-              <span>6 min read</span>
+          <div class="tags">
+            <span class="tag tag-cyan">Penetration Testing</span>
+            <span class="tag tag-cyan">Vulnerability Assessment</span>
+            <span class="tag tag-cyan">Network Security</span>
+            <span class="tag tag-cyan">Security Automation</span>
+            <span class="tag tag-cyan">CTF & Purple Team</span>
+            <span class="tag tag-cyan">API & Web App Security</span>
+            <span class="tag tag-cyan">Burp / Nmap / Metasploit</span>
+            <span class="tag tag-cyan">Wireshark / Scapy</span>
+            <span class="tag tag-cyan">Linux Hardening</span>
+            <span class="tag tag-cyan">Technical Documentation</span>
+          </div>
+        </div>
+        <div class="skill-card reveal">
+          <div class="skill-header">
+            <div class="skill-badge" style="background:rgba(52,211,153,0.15);color:var(--emerald)">D</div>
+            <div>
+              <h3 style="background:linear-gradient(135deg,#34d399,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Data Science</h3>
+              <span>ML, analytics & geospatial</span>
             </div>
-            <h3 class="blog-title">5 Essential API Security Best Practices</h3>
-            <p class="blog-excerpt">Learn how to protect your API endpoints from common attacks including authentication bypass, rate limiting, and data exposure vulnerabilities.</p>
-            <a href="blog/api-security-practices.html" class="read-more">Read more →</a>
           </div>
-        </article>
+          <div class="tags">
+            <span class="tag tag-emerald">Python (Pandas, Sklearn)</span>
+            <span class="tag tag-emerald">LightGBM / Supervised ML</span>
+            <span class="tag tag-emerald">Spatial Analysis (DBSCAN)</span>
+            <span class="tag tag-emerald">Feature Engineering</span>
+            <span class="tag tag-emerald">Leakage Audit & Eval</span>
+            <span class="tag tag-emerald">SQL / PostgreSQL / MySQL</span>
+            <span class="tag tag-emerald">Data Visualization</span>
+            <span class="tag tag-emerald">Geospatial Intelligence</span>
+            <span class="tag tag-emerald">Dashboarding</span>
+            <span class="tag tag-emerald">MLOps Fundamentals</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        <article class="blog-card">
-          <img class="blog-thumb" src="assets/blog3.jpg" alt="CTF challenge walkthrough" loading="lazy">
-          <div class="blog-content">
-            <div class="blog-meta">
-              <span>Jan 10, 2026</span>
-              <span>•</span>
-              <span>12 min read</span>
+  <!-- PROJECTS -->
+  <section class="section" id="projects">
+    <div class="container">
+      <div class="reveal">
+        <p class="section-label">Projects</p>
+        <h2 class="section-title">Work that <span class="text-gradient">ships impact</span></h2>
+        <p class="section-desc">Production and portfolio projects spanning data science for public safety and healthcare, and cybersecurity tooling for real assessments.</p>
+      </div>
+      <div class="projects-list">
+
+        <!-- Beba Salama -->
+        <article class="project featured reveal">
+          <div class="project-top">
+            <div class="project-identity">
+              <div class="project-icon">📍</div>
+              <div>
+                <h3>Beba Salama <span class="project-tag tag-ds">Data Science · Capstone</span></h3>
+                <p class="project-sub">Kenya Road Risk Intelligence Platform</p>
+              </div>
             </div>
-            <h3 class="blog-title">CTF Walkthrough: Web Exploitation Challenge</h3>
-            <p class="blog-excerpt">Step-by-step breakdown of solving a complex web exploitation CTF challenge, covering reconnaissance, vulnerability discovery, and exploitation techniques.</p>
-            <a href="blog/ctf-walkthrough-web.html" class="read-more">Read more →</a>
+            <div class="project-links">
+              <a class="plink plink-live" href="https://3fr4nj35-3ku5h3.github.io/Beba-Salama/" target="_blank" rel="noopener">Live Demo ↗</a>
+              <a class="plink plink-code" href="https://github.com/3Fr4nj35-3ku5h3/Beba-Salama" target="_blank" rel="noopener">Code</a>
+            </div>
+          </div>
+          <p class="project-desc">Interactive platform analysing <strong>31,064</strong> real crashes (2012–2023). DBSCAN blackspot zones, LightGBM high-risk classifier (AUC 0.61 on honest pre-journey features only), Route Risk Check, and GPS Drive Mode with proximity alerts.</p>
+          <div class="highlights">
+            <div class="highlight">31,064 geolocated crashes</div>
+            <div class="highlight">25 blackspot zones (DBSCAN)</div>
+            <div class="highlight">AUC-ROC 0.61 · 52% high-risk recall</div>
+            <div class="highlight">Night fatality +60% vs day</div>
+            <div class="highlight">5am identified as deadliest hour</div>
+            <div class="highlight">Ngao Labs capstone project</div>
+          </div>
+          <div class="stack">
+            <span>Python</span><span>LightGBM</span><span>DBSCAN</span><span>HTML/JS</span><span>Geospatial</span>
           </div>
         </article>
-      </div>
-      <div style="text-align:center;margin-top:2rem;">
-        <a href="blog/index.html" class="btn btn-primary">View All Posts</a>
-      </div>
-    </section>
 
-    <!-- Focus Areas -->
-    <section id="focus" class="container" aria-labelledby="focus-heading">
-      <h2 id="focus-heading">Areas of Focus</h2>
-      <div class="grid">
-        <div class="card">
-          <h3>🔍 Purple Team Security Labs</h3>
-          <p>Hands-on security experiments combining offensive and defensive tactics. Each lab includes detailed setup instructions, attack scenarios, and defensive countermeasures with reproducible results.</p>
-        </div>
-        <div class="card">
-          <h3>📝 Documentation-First Approach</h3>
-          <p>Every project prioritizes clear documentation. I focus on making complex security concepts accessible through well-structured guides, explicit assumptions, and actionable steps.</p>
-        </div>
-        <div class="card">
-          <h3>🎯 Beginner-to-Intermediate Pathways</h3>
-          <p>Curated learning resources and tutorials designed to help newcomers progress from foundational concepts to intermediate cybersecurity skills through practical, real-world scenarios.</p>
-        </div>
-      </div>
-    </section>
+        <!-- MaternalCare -->
+        <article class="project featured reveal">
+          <div class="project-top">
+            <div class="project-identity">
+              <div class="project-icon">❤️</div>
+              <div>
+                <h3>MaternalCare <span class="project-tag tag-ml">Machine Learning · Healthcare</span></h3>
+                <p class="project-sub">Maternal Health Risk Assessment</p>
+              </div>
+            </div>
+            <div class="project-links">
+              <a class="plink plink-live" href="https://maternal-health-risk-red.vercel.app/" target="_blank" rel="noopener">Live Demo ↗</a>
+            </div>
+          </div>
+          <p class="project-desc">ML-assisted antenatal decision-support tool. Nurses enter age, blood pressure, blood sugar, temperature and heart rate to receive an instant risk assessment for maternal health screening — deployed on Vercel.</p>
+          <div class="highlights">
+            <div class="highlight">Real-time risk scoring</div>
+            <div class="highlight">Nurse portal interface</div>
+            <div class="highlight">ANC decision support</div>
+            <div class="highlight">Production deploy on Vercel</div>
+          </div>
+          <div class="stack">
+            <span>ML</span><span>React</span><span>Vercel</span><span>Healthcare AI</span>
+          </div>
+        </article>
 
-    <!-- Contact Section -->
-    <section id="contact" class="container" aria-labelledby="contact-heading">
-      <h2 id="contact-heading">Get in Touch</h2>
-      <div class="contact-cta">
-        <h3>Let's Work Together</h3>
-        <p>I'm currently seeking junior cybersecurity analyst positions and freelance technical writing opportunities. Whether you need security documentation, vulnerability assessments, or technical content, I'd love to hear from you.</p>
-        <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;">
-          <a class="btn btn-primary" href="mailto:kuriaf791@gmail.com">Email Me</a>
-          <a class="btn btn-ghost" href="https://wa.me/254797145871" target="_blank" rel="noopener">WhatsApp</a>
-          <a class="btn btn-ghost" href="https://twitter.com/insightsphere7" target="_blank" rel="noopener">Twitter</a>
-          <a class="btn btn-ghost" href="https://github.com/3Fr4nj35-3ku5h3" target="_blank" rel="noopener">GitHub</a>
+        <!-- SecureNet -->
+        <article class="project reveal">
+          <div class="project-top">
+            <div class="project-identity">
+              <div class="project-icon">🌐</div>
+              <div>
+                <h3>SecureNet Toolkit <span class="project-tag tag-cyber">Cybersecurity</span></h3>
+                <p class="project-sub">Network Security Automation</p>
+              </div>
+            </div>
+            <div class="project-links">
+              <a class="plink plink-code" href="https://github.com/3Fr4nj35-3ku5h3/securenet-toolkit" target="_blank" rel="noopener">Code</a>
+            </div>
+          </div>
+          <p class="project-desc">Automated network scanning and vulnerability assessment framework. Modular Python architecture for traffic analysis, anomaly detection, and security policy validation — reduced manual triage time across assessments.</p>
+          <div class="highlights">
+            <div class="highlight">Automated vuln scanning</div>
+            <div class="highlight">Traffic anomaly detection</div>
+            <div class="highlight">Policy validation</div>
+            <div class="highlight">~40% triage time reduction</div>
+          </div>
+          <div class="stack">
+            <span>Python</span><span>Scapy</span><span>Nmap</span><span>NetworkX</span>
+          </div>
+        </article>
+
+        <!-- Secure Audit -->
+        <article class="project reveal">
+          <div class="project-top">
+            <div class="project-identity">
+              <div class="project-icon">🔒</div>
+              <div>
+                <h3>Secure Audit Toolkit <span class="project-tag tag-cyber">Cybersecurity</span></h3>
+                <p class="project-sub">Vulnerability Scanning & Reporting</p>
+              </div>
+            </div>
+            <div class="project-links">
+              <a class="plink plink-code" href="https://github.com/3Fr4nj35-3ku5h3" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+          <p class="project-desc">Automated vulnerability scanning and reporting framework used across 50+ security assessments. Built with Python and Bash for seamless integration with existing security workflows.</p>
+          <div class="highlights">
+            <div class="highlight">50+ assessments</div>
+            <div class="highlight">Python + Bash automation</div>
+            <div class="highlight">Structured reporting</div>
+          </div>
+          <div class="stack">
+            <span>Python</span><span>Bash</span><span>Automation</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section class="section expertise-bg" id="certifications">
+    <div class="container">
+      <div class="reveal" style="text-align:center">
+        <p class="section-label">Credentials</p>
+        <h2 class="section-title">Certifications & Training</h2>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-inner">
+          <div class="cert-icon">🏆</div>
+          <div class="cert-body">
+            <h3>Junior Data Scientist</h3>
+            <span class="verified">Verified</span>
+            <p class="cert-meta">Ngao Labs Initiative · Cohort 3 · 2026</p>
+            <p class="text-muted" style="font-size:0.9rem;margin-bottom:1rem;line-height:1.65">
+              10-week foundational + applied AI curriculum. Capstone presented to industry judges. Skills: Data Science, Data Analysis, Machine Learning, AI, Large Language Models.
+            </p>
+            <ul class="cert-list">
+              <li>80%+ attendance requirement met</li>
+              <li>All modules & practical assessments completed</li>
+              <li>Capstone: functional Data Science / AI solution</li>
+              <li>Portfolio built on real-world challenges</li>
+            </ul>
+            <a href="https://credsverse.com/credentials/90c1b4a9-190e-48b5-8603-931373eca0a7" target="_blank" rel="noopener" class="btn btn-emerald">View Credential ↗</a>
+          </div>
         </div>
       </div>
-    </section>
-  </main>
+      <div class="mini-certs">
+        <div class="mini-cert reveal"><h4>Certified Cybersecurity Analyst</h4><p>Professional certification</p></div>
+        <div class="mini-cert reveal"><h4>Network Security Specialist</h4><p>Training track</p></div>
+        <div class="mini-cert reveal"><h4>CTF Competitions</h4><p>Active participant</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section contact grid-bg" id="contact">
+    <div class="container">
+      <div class="reveal">
+        <p class="section-label">Contact</p>
+        <h2 class="section-title">Let's build something<br><span class="text-gradient">secure & intelligent</span></h2>
+        <p class="contact-desc">Open to junior cybersecurity analyst roles, data science / analytics positions, freelance security assessments, and technical writing collaborations.</p>
+      </div>
+      <div class="contact-grid reveal">
+        <a class="contact-link" href="https://github.com/3Fr4nj35-3ku5h3" target="_blank" rel="noopener">
+          <div class="contact-ico">⌘</div>
+          <div><strong>GitHub</strong><span>3Fr4nj35-3ku5h3</span></div>
+        </a>
+        <a class="contact-link" href="https://linkedin.com/in/francis-kuria" target="_blank" rel="noopener">
+          <div class="contact-ico">in</div>
+          <div><strong>LinkedIn</strong><span>francis-kuria</span></div>
+        </a>
+        <a class="contact-link" href="https://wa.me/254792091747" target="_blank" rel="noopener">
+          <div class="contact-ico">💬</div>
+          <div><strong>WhatsApp</strong><span>+254 792 091 747</span></div>
+        </a>
+        <a class="contact-link" href="https://credsverse.com/credentials/90c1b4a9-190e-48b5-8603-931373eca0a7" target="_blank" rel="noopener">
+          <div class="contact-ico">🎓</div>
+          <div><strong>Credential</strong><span>Junior Data Scientist</span></div>
+        </a>
+      </div>
+      <p class="text-muted" style="font-size:0.75rem">Based in Nairobi, Kenya · UTC+03:00</p>
+    </div>
+  </section>
 
   <footer>
     <div class="container">
-      <p>© 2026 Francis Kuria • Built with care for security and accessibility</p>
-      <p style="margin-top:0.5rem;"><a href="/privacy.html">Privacy Policy</a></p>
+      <p>© <span id="year"></span> Francis Ngumi Kuria. All rights reserved.</p>
+      <p>Updated portfolio · Host on GitHub Pages or Vercel</p>
     </div>
   </footer>
 
   <script>
-    (function(){
-      const btn = document.getElementById('navToggle');
-      const nav = document.getElementById('site-nav');
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-      function toggleNav(){
-        const expanded = btn.getAttribute('aria-expanded') === 'true';
-        btn.setAttribute('aria-expanded', String(!expanded));
-        nav.hidden = expanded;
-      }
+    // Sticky nav
+    const nav = document.getElementById("nav");
+    window.addEventListener("scroll", () => {
+      nav.classList.toggle("scrolled", window.scrollY > 40);
+    });
 
-      btn.addEventListener('click', toggleNav);
+    // Mobile menu
+    const menuBtn = document.getElementById("menuBtn");
+    const mobileMenu = document.getElementById("mobileMenu");
+    menuBtn.addEventListener("click", () => {
+      mobileMenu.classList.toggle("open");
+    });
+    function closeMenu() {
+      mobileMenu.classList.remove("open");
+    }
 
-      document.addEventListener('click', (e) => {
-        if (!nav.contains(e.target) && !btn.contains(e.target) && !nav.hidden) {
-          btn.setAttribute('aria-expanded', 'false');
-          nav.hidden = true;
-        }
-      });
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !nav.hidden) {
-          btn.setAttribute('aria-expanded', 'false');
-          nav.hidden = true;
-          btn.focus();
-        }
-      });
-
-      // Active nav highlighting
-      const sections = document.querySelectorAll('section[id]');
-      const navLinks = document.querySelectorAll('nav a[href^="#"]');
-
-      function setActiveNav() {
-        let current = '';
-        sections.forEach(section => {
-          const sectionTop = section.offsetTop - 100;
-          if (scrollY >= sectionTop) {
-            current = section.getAttribute('id');
+    // Scroll reveal
+    const reveals = document.querySelectorAll(".reveal");
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("visible");
+            io.unobserve(e.target);
           }
         });
-
-        navLinks.forEach(link => {
-          link.classList.remove('active');
-          if (link.getAttribute('href') === `#${current}`) {
-            link.classList.add('active');
-          }
-        });
-      }
-
-      window.addEventListener('scroll', setActiveNav);
-      setActiveNav();
-    })();
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+    );
+    reveals.forEach((el) => io.observe(el));
   </script>
 </body>
 </html>
