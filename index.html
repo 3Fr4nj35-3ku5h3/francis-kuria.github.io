@@ -446,6 +446,20 @@
       font-size: 0.85rem; color: #c5cdd9; margin-bottom: 0.4rem;
     }
     .cert-list li::before { content: "✓"; color: var(--emerald); font-weight: 700; }
+    .certs-dual {
+      display: grid;
+      gap: 1.25rem;
+      margin-top: 2.5rem;
+      max-width: 960px;
+      margin-left: auto;
+      margin-right: auto;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 800px) {
+      .certs-dual { grid-template-columns: 1fr 1fr; }
+    }
+    .certs-dual .cert-card { margin: 0; }
+
     .mini-certs {
       display: grid; gap: 0.75rem; margin-top: 1.5rem;
       grid-template-columns: 1fr;
@@ -787,34 +801,62 @@
   <!-- CERTIFICATIONS -->
   <section class="section expertise-bg" id="certifications">
     <div class="container">
-      <div class="reveal" style="text-align:center">
+      <div class="reveal" style="text-align:center;margin-bottom:0.5rem">
         <p class="section-label">Credentials</p>
         <h2 class="section-title">Certifications & Training</h2>
       </div>
-      <div class="cert-card reveal">
-        <div class="cert-inner">
-          <div class="cert-icon">🏆</div>
-          <div class="cert-body">
-            <h3>Junior Data Scientist</h3>
-            <span class="verified">Verified</span>
-            <p class="cert-meta">Ngao Labs Initiative · Cohort 3 · 2026</p>
-            <p class="text-muted" style="font-size:0.9rem;margin-bottom:1rem;line-height:1.65">
-              10-week foundational + applied AI curriculum. Capstone presented to industry judges. Skills: Data Science, Data Analysis, Machine Learning, AI, Large Language Models.
-            </p>
-            <ul class="cert-list">
-              <li>80%+ attendance requirement met</li>
-              <li>All modules & practical assessments completed</li>
-              <li>Capstone: functional Data Science / AI solution</li>
-              <li>Portfolio built on real-world challenges</li>
-            </ul>
-            <a href="https://credsverse.com/credentials/90c1b4a9-190e-48b5-8603-931373eca0a7" target="_blank" rel="noopener" class="btn btn-emerald">View Credential ↗</a>
+
+      <div class="certs-dual">
+        <!-- Cyber Shujaa -->
+        <div class="cert-card reveal">
+          <div class="cert-inner">
+            <div class="cert-icon" style="background:rgba(34,211,238,0.12)">🛡️</div>
+            <div class="cert-body">
+              <h3>Security Analyst</h3>
+              <span class="verified" style="background:rgba(34,211,238,0.12);color:#67e8f9;border-color:rgba(34,211,238,0.3)">With Pass</span>
+              <p class="cert-meta">Cyber Shujaa Program · Cohort VI · Aug 2024</p>
+              <p class="text-muted" style="font-size:0.9rem;margin-bottom:1rem;line-height:1.65">
+                Cybersecurity Training and Placement Program for Youth in Kenya. Conducted by <strong>USIU-Africa</strong>, <strong>Serianu Ltd</strong> and <strong>Kenya Bankers Association</strong>, sponsored by the Challenge Fund for Youth Employment.
+              </p>
+              <ul class="cert-list">
+                <li>Security Analyst track — completed with Pass</li>
+                <li>Industry partners: Serianu · KBA · USIU-Africa</li>
+                <li>Certificate No. CS2024-GO2408221024068775</li>
+                <li>Placement-oriented cybersecurity training</li>
+              </ul>
+              <p class="text-muted" style="font-size:0.75rem;margin:0.5rem 0 1rem">Issued 28 Aug 2024 · William Makatiani, C.E.O, Serianu Ltd</p>
+              <a href="assets/Cyber-Shujaa-Certificate.pdf" target="_blank" rel="noopener" class="btn btn-outline">View Certificate ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ngao Labs Data Science -->
+        <div class="cert-card reveal">
+          <div class="cert-inner">
+            <div class="cert-icon">🏆</div>
+            <div class="cert-body">
+              <h3>Junior Data Scientist</h3>
+              <span class="verified">Verified</span>
+              <p class="cert-meta">Ngao Labs Initiative · Cohort 3 · 2026</p>
+              <p class="text-muted" style="font-size:0.9rem;margin-bottom:1rem;line-height:1.65">
+                10-week foundational + applied AI curriculum. Capstone presented to industry judges. Skills: Data Science, Data Analysis, Machine Learning, AI, Large Language Models.
+              </p>
+              <ul class="cert-list">
+                <li>80%+ attendance requirement met</li>
+                <li>All modules & practical assessments completed</li>
+                <li>Capstone: functional Data Science / AI solution</li>
+                <li>Portfolio built on real-world challenges</li>
+              </ul>
+              <a href="https://credsverse.com/credentials/90c1b4a9-190e-48b5-8603-931373eca0a7" target="_blank" rel="noopener" class="btn btn-emerald">View Credential ↗</a>
+            </div>
           </div>
         </div>
       </div>
-      <div class="mini-certs">
-        <div class="mini-cert reveal"><h4>Certified Cybersecurity Analyst</h4><p>Professional certification</p></div>
+
+      <div class="mini-certs" style="margin-top:1.5rem">
         <div class="mini-cert reveal"><h4>Network Security Specialist</h4><p>Training track</p></div>
         <div class="mini-cert reveal"><h4>CTF Competitions</h4><p>Active participant</p></div>
+        <div class="mini-cert reveal"><h4>Technical Writing</h4><p>Security documentation</p></div>
       </div>
     </div>
   </section>
@@ -860,6 +902,7 @@
   <footer>
     <div class="container">
       <p>© <span id="year"></span> Francis Ngumi Kuria. All rights reserved.</p>
+      <p>Updated portfolio · Host on GitHub Pages or Vercel</p>
     </div>
   </footer>
 
